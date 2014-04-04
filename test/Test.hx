@@ -1,5 +1,5 @@
 // import node.Assert;
-// import node.Buffer;
+import node.Buffer;
 // import node.ChildProcess;
 // import node.Cluster;
 // import node.Console;
@@ -12,7 +12,7 @@ import node.Fs;
 // import node.Node;
 // import node.Os;
 // import node.Path;
-import node.Process;
+// import node.Process;
 // import node.Punycode;
 // import node.QueryString;
 // import node.Readline;
@@ -26,37 +26,37 @@ import node.Process;
 // import node.Zlib;
 // import node.Net;
 
-class T1 extends node.stream.ReadableImpl{
-  var i = 0;
-  public inline function new(){
-    super();
-    push('1');
-    push('2');
-    push('3');
-  }
-  override function _read(_){
-    // push(''+(i++));
-  }
-}
+// class T1 extends node.stream.ReadableImpl{
+//   var i = 0;
+//   public inline function new(){
+//     super();
+//     push('1');
+//     push('2');
+//     push('3');
+//   }
+//   override function _read(_){
+//     // push(''+(i++));
+//   }
+// }
 
-class T2 extends node.stream.WritableImpl{
-  public inline function new(){
-    super();
-  }
-  // override public function write(data:Dynamic, ?encoding:String):Void{
-  //   trace('lol');
-  // }
-  // override function _write(chunk, enc, cb){
-  //   trace('lol2');
-  // }
-  function lol(){}
-}
+// class T2 extends node.stream.WritableImpl{
+//   public inline function new(){
+//     super();
+//   }
+//   override function _write(chunk, enc, cb){
+//     trace(chunk); cb(null);
+//   }
+// }
 class Test{
+  static inline var undefined = 'undefined';
   public static function main(){
-
-    var t1 = new T1();
-    var t2 = new T2();
-    t1.pipe(t2);
+    var XXXXXXXXXXXXXXXXXXXXXXx = 'XXXXXXXXXXXXXXXXXXXXXXXX';
+    // var t1 = new T1();
+    // var t2 = new T2();
+    // t1.pipe(t2);
+    // var buf = new node.Buffer([1,2,3]);
+    // trace(buf);
+    trace(untyped __js__(undefined));
     // t2.write('lol');
     // t1.pipe(t2);
     // node.Console.log(t1);
@@ -69,7 +69,7 @@ class Test{
     // t1.pipe(t2);
     // var text = Fs.createReadStream('Test.hx');
     // text.pipe(t2);
-    trace('GOOD');
+    // trace('GOOD');
     // text.resume();
   }
 }

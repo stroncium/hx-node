@@ -1,6 +1,7 @@
 package node;
 import node.stream.ReadableImpl;
 import node.stream.WritableImpl;
+import node.Url;
 
 private typedef RequestOptions = {
   ?host:String,
@@ -10,7 +11,7 @@ private typedef RequestOptions = {
   ?socketPath:Dynamic,//TODO
   ?method:String,
   ?path:String,
-  ?headers:Dynamic,
+  ?headers:js.Object,
   ?auth:String,
   ?agent:Dynamic, //TODO
 };
@@ -48,7 +49,7 @@ extern class HttpServer extends Net.NetServer{
 extern class ServerRequest extends ReadableImpl{
   public var method(default,null):String;
   public var url(default, null):String;
-  public var headers:Dynamic;
+  public var headers:js.Object;
   public var trailers(default, null):Dynamic; //TODO
   public var httpVersion(default, null):String;
   // public function pause():Void;
@@ -67,11 +68,11 @@ extern class ServerResponse extends WritableImpl{
   public var sendDate:Bool;
   public function writeContinue():Void;
   //@:overload(function (statusCode:Int, reasonPhrase:String, ?headers:Dynamic<String>):Void{})
-  public function writeHead(statusCode:Int, ?headers:Dynamic<String>):Void;
+  public function writeHead(statusCode:Int, ?headers:js.Object):Void;
   public function setHeader(name:String, value:String):Void;
   public function getHeader(name:String):String;
   public function removeHeader(name:String):Void;
-  public function addTrailers(headers:Dynamic):Void;
+  public function addTrailers(headers:js.Object):Void;
 
   @:overload(function(?data:Buffer):Void{})
   override public function end(data:String, ?encoding:String = 'utf8'):Void;
@@ -92,10 +93,10 @@ extern class ClientRequest extends WritableImpl{
   public function setSocketKeepAlive(?enable:Bool = false ?initialDelay:Int = 0):Void;
 }
 
-@:native('node.Http.ClientRequest')
+@:native('node.Http.OutgoingMessage')
 extern class ClientResponse extends node.stream.ReadableImpl{
   public var statusCode:Int;
   public var httpVersion:String;
-  public var headers:Dynamic;
+  public var headers:js.Object;
   public var trailers:Dynamic;
 }

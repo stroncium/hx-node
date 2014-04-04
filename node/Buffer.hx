@@ -1,11 +1,8 @@
 package node;
-@:keep extern class Buffer implements ArrayAccess<Int>{
+@:initPackage
+extern class Buffer implements ArrayAccess<Int>{
   static function __init__():Void{
-    #if js_flatten
-      var node_Buffer = Node.js('Buffer');
-    #else
-      untyped Buffer = Node.js('Buffer');
-    #end
+    untyped (Buffer = Node.js('Buffer'));
   }
 
   public static function concat(buffers:Array<Buffer>, ?byteLength:Int):Buffer;
@@ -34,7 +31,6 @@ package node;
   function readInt8(offset:Int,?noAssert:Bool):Int;
   function readInt16LE(offset:Int,?noAssert:Bool):Int;
   function readInt16BE(offset:Int,?noAssert:Bool):Int;
-  function readInt32LE(offset:Int,?noAssert:Bool):Int;
   function readInt32BE(offset:Int,?noAssert:Bool):Int;
 
   function readFloatLE(offset:Int,?noAssert:Bool):Float;
@@ -51,11 +47,29 @@ package node;
   function writeInt8(value:Int,offset:Int,?noAssert:Bool):Void;
   function writeInt16LE(value:Int,offset:Int,?noAssert:Bool):Void;
   function writeInt16BE(value:Int,offset:Int,?noAssert:Bool):Void;
-  function writeInt32LE(value:Int,offset:Int,?noAssert:Bool):Void;
   function writeInt32BE(value:Int,offset:Int,?noAssert:Bool):Void;
 
   function writeFloatLE(value:Float,offset:Int,?noAssert:Bool):Void;
   function writeFloatBE(value:Float,offset:Int,?noAssert:Bool):Void;
   function writeDoubleLE(value:Float,offset:Int,?noAssert:Bool):Void; // is this right?
   function writeDoubleBE(value:Float,offset:Int,?noAssert:Bool):Void; // is this right?
+
+  // function readInt32LE(offset:Int,?noAssert:Bool):Int;
+  // function writeInt32LE(value:Int,offset:Int,?noAssert:Bool):Void;
+  public inline function readInt32LE(off:Int):Int{
+    return
+      this[off] |
+      this[off+1] << 8 |
+      this[off+2] << 16 |
+      this[off+3] << 24
+    ;
+  }
+  public inline function writeInt32LE(v:Int, off:Int):Int{
+    this[off] = v & 0xFF;
+    this[off+1] = (v >> 8) & 0xFF;
+    this[off+2] = (v >> 16) & 0xFF;
+    this[off+3] = (v >> 24) & 0xFF;
+    return v;
+  }
+
 }

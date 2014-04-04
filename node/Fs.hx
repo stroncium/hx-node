@@ -53,6 +53,7 @@ extern class Stats{
   public function isSocket():Bool;
 }
 
+@:initPackage
 extern class Fs{
   static function __init__():Void untyped Fs = Node.require('fs');
 

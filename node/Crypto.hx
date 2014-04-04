@@ -14,42 +14,42 @@ extern class Credentials{}
 
 extern class Crypto{
   static function __init__():Void untyped Crypto = Node.require('crypto');
-  public function createCredentials(details:CredentialsDetails):Credentials;
-  public function createHash(algorithm:String):Hash;
-  public function createHmac(algorithm:String, key:String):Hmac;
+  public static function createCredentials(details:CredentialsDetails):Credentials;
+  public static function createHash(algorithm:String):Hash;
+  public static function createHmac(algorithm:String, key:String):Hmac;
 
   @:overload(function (algorithm:String, password:Buffer):Cipher{})
-  public function createCipher(algorithm:String, password:String):Cipher;
+  public static function createCipher(algorithm:String, password:String):Cipher;
 
-  public function createCipheriv(algorithm:String, key:String, iv:String):Cipher;
-  public function createDecipher(algorithm:String, password:String):Decipher;
-  public function createDecipheriv(algorithm:String, key:String, iv:String):Decipher;
-  public function createSign(algorithm:String):Sign;
-  public function createVerify(algorithm:String):Verify;
+  public static function createCipheriv(algorithm:String, key:String, iv:String):Cipher;
+  public static function createDecipher(algorithm:String, password:String):Decipher;
+  public static function createDecipheriv(algorithm:String, key:String, iv:String):Decipher;
+  public static function createSign(algorithm:String):Sign;
+  public static function createVerify(algorithm:String):Verify;
   @:overload(function(prime_length:Int):DiffieHellman{})
-  public function createDiffieHellman(prime:Buffer):DiffieHellman;
+  public static function createDiffieHellman(prime:Buffer):DiffieHellman;
   // public function createDiffieHellman(prime:, ?enc:String):DiffieHellman;
-  public function getDiffieHellman(group_name:String):DiffieHellman;
-  public function pbkdf2Sync(password:String, salt:String, iterations:Int, keylen:Int):String;
-  public function pbkdf2(password:String, salt:String, iterations:Int, keylen:Int, cb:Dynamic->String->Void):Void;
+  public static function getDiffieHellman(group_name:String):DiffieHellman;
+  public static function pbkdf2Sync(password:String, salt:String, iterations:Int, keylen:Int):String;
+  public static function pbkdf2(password:String, salt:String, iterations:Int, keylen:Int, cb:Dynamic->String->Void):Void;
 
-  public function randomBytes(size:Int, ?cb:Dynamic->Buffer->Void):Buffer;
+  public static function randomBytes(size:Int, ?cb:Dynamic->Buffer->Void):Buffer;
 }
 
-@:fakeEnum(String) extern class DigestEncoding{
-  public static inline var hex = 'hex';
-  public static inline var binary = 'binary';
-  public static inline var base64 = 'base64';
+extern class DigestEncoding{
+  public static inline var Hex = 'hex';
+  public static inline var Binary = 'binary';
+  public static inline var Base64 = 'base64';
 }
 extern class Hash{
   @:overload(function(data:String, encoding:String = 'utf8'):Void{})
-  public function update(data:String, ?encoding:String):Void;
-  public function digest(encoding:DigestEncoding):String;
+  public function update(data:String, ?encoding:String):Hash;
+  public function digest(encoding:String):String;
 }
 
 extern class Hmac{
   public function update(data:String):Void;
-  public function digest(?encoding:DigestEncoding):String;
+  public function digest(?encoding:String):String;
 }
 
 
