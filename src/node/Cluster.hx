@@ -1,13 +1,46 @@
 package node;
 
-private extern class Handle{}
-extern class Worker{
-  // Event: 'message'
-  // Event: 'online'
-  // Event: 'listening'
-  // Event: 'disconnect'
-  // Event: 'exit'
-  // Event: 'error'
+private abstract Handle(Void){}
+
+@:enum
+private abstract AddressType(Dynamic) #if !debug from String from Int #end{
+  inline var TCP4 = 4;
+  inline var TCP6 = 6;
+  inline var UnixDomainSocket = -1;
+  inline var UDP4 = 'udp4';
+  inline var UDP6 = 'udp6';
+
+  #if debug
+    @:from public static function fromString(v:String):AddressType{
+      if(v != 'udp4' && v != 'udp6') throw 'Unknown address type: $v';
+      return untyped v;
+    }
+
+    @:from public static function fromInt(v:Int):AddressType{
+      if(v != 4 && v != 6 && v != -1) throw 'Unknown address type: $v';
+      return untyped v;
+    }
+  #end
+}
+
+private typedef Address = {
+  address:String,
+  port:Int,
+  addressType:AddressType,
+};
+
+private typedef Signal = String;
+
+@:native('node.Cluster.Worker')
+@:event('message', (msg:js.Object))
+@:event('online')
+@:event('listening', (address:Address))
+@:event('disconnect')
+@:event('exit', (code:Int), (signal:Signal))
+@:event('error')
+extern class Worker extends EventEmitter{
+  static function __init__():Void Node.classify(Worker, EventEmitter);
+
   public var id:String;
   public var process:ChildProcess;
   public var suicide:Null<Bool>;
@@ -22,16 +55,15 @@ private typedef ClusterSettings = {
   silent:Bool,
 };
 
+@:jsRequire('cluster')
+@:event('fork', (worker:Worker))
+@:event('online', (worker:Worker))
+@:event('listening', (worker:Worker), (address:Dynamic)) //TODO
+@:event('disconnect', (worker:Worker))
+@:event('exit', (worker:Worker), (code:Int), (signal:Signal))
+@:event('setup')
 extern class Cluster extends EventEmitter{
-  static function __init__():Void untyped Cluster = Node.require('cluster');
-
-  // Event: 'fork'
-  // Event: 'online'
-  // Event: 'listening'
-  // Event: 'disconnect'
-  // Event: 'exit'
-  // Event: 'setup'
-
+  static function __init__():Void Node.classify(Cluster, EventEmitter);
 
   public static var settings(default,null):ClusterSettings;
   public static var isMaster(default,null):Bool;

@@ -1,13 +1,15 @@
 package node;
 
+@:jsRequire('child_process')
 extern class ChildProcess extends EventEmitter{
+  static function __init__():Void Node.classify(ChildProcess, EventEmitter);
   // Event 'exit'
   // Event 'close'
   // Event 'disconnect'
   // Event 'message'
-  public var stdin(default,null):node.stream.WritableImpl;
-  public var stdout(default,null):node.stream.ReadableImpl;
-  public var stderr(default,null):node.stream.ReadableImpl;
+  public var stdin(default,null):node.stream.Writable;
+  public var stdout(default,null):node.stream.Readable;
+  public var stderr(default,null):node.stream.Readable;
   public var pid(default,null):Int;
 
   public function kill(?signal:String):Void;
@@ -18,8 +20,6 @@ extern class ChildProcess extends EventEmitter{
   public static function exec(cmd:String, options:ExecOptions, cb:Dynamic->Buffer->Buffer->Void):ChildProcess;
   public static function execFile(cmd:String, options:ExecOptions, cb:Dynamic->Buffer->Buffer->Void):ChildProcess;
   public static function fork(path:String, args:Array<String>, options:ForkOptions):ChildProcess;
-
-  static function __init__():Void untyped ChildProcess = Node.require('child_process');
 }
 
 private typedef ForkOptions = {

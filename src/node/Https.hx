@@ -36,6 +36,8 @@ private extern class Agent {
   public var requests:Array<Http.ClientRequest>;
 }
 
+@:jsRequire('https')
+@:final
 extern class Https{
   public static function createServer(opts:HttpsOpts, ?listener:Http.ServerRequest->Http.ServerResponse->Void):HttpsServer;
   //TODO
@@ -43,9 +45,8 @@ extern class Https{
   // public static function get(opts, cb):Void;
   public static var globalAgent:Agent;
 
-  static function __init__():Void{
-    untyped Https = Node.require('https');
-    Node.oo(Agent);
-    Node.oo(HttpsServer, Http.HttpServer);
-  }
+  // static function __init__():Void{
+  //   Node.oo(Agent);
+  //   Node.oo(HttpsServer, Http.HttpServer);
+  // }
 }

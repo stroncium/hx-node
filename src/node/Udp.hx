@@ -1,8 +1,8 @@
 package node;
 
-@:fakeEnum(String) extern private class UdpType{
-  public static inline var Udp6 = 'udp6';
-  public static inline var Udp4 = 'udp4';
+@:enum abstract UdpType(String){
+  var Udp6 = 'udp6';
+  var Udp4 = 'udp4';
 }
 
 private typedef MsgInfo = {
@@ -34,8 +34,8 @@ private extern class Socket extends EventEmitter{
   public function ref():Void;
 }
 
+@:jsRequire('dgram')
 extern class Udp{
-  static function __init__():Void untyped Udp = Node.require('dgram');
   public static function createSocket(type:UdpType, ?cb:Buffer->MsgInfo->Void):Socket;
 }
 

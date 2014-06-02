@@ -1,31 +1,46 @@
 package node;
 
 private typedef CB = Dynamic->Void;
-extern class FileDescriptor{}
+abstract FileDescriptor(Void){}
 
-private typedef FileOpenFlags = String;
-private typedef SymlinkType = String;
+@:enum abstract SymlinkType(String) #if !debug from String #end{
+  inline var Dir = 'dir';
+  inline var File = 'file';
+  inline var Junction = 'junction';
 
-    // FileOpenFlags = {Read: 'r', R: 'r',ReadWrite: 'r+', RPlus: 'r+',ReadSync: 'rs', RS: 'rs',ReadWriteSync: 'rs+', RSPlus: 'rs+',Write: 'w', W: 'w',WriteExclusive: 'wx', WX: 'wx',WriteRead: 'w+', WPlus: 'w+',WriteReadExclusive: 'wx+', WXPlus: 'wx+',Append: 'a', A: 'a',AppendExclusive: 'ax', AX: 'ax',ReadAppend: 'a+', APlus: 'a+',ReadAppendExclusive: 'ax+', AXPlus: 'ax+', Custom: function(s){return s;}};
-    // SymlinkType = {Dir:'dir', File:'file', Junction:'junction', Custom: function(s){return s;} };
-// @:native('node.Fs.SymlinkType')
-// extern enum SymlinkType{ Dir; File; Junction; Custom(s:String); }
+  #if debug
+    static var allowedNames:Array<String> = 'dir|file|junction'.split('|');
+    public function new(name:String){
+      if(allowedNames.indexOf(name) == -1) throw 'Unkown symlink type: $name';
+      this = name;
+    }
+  #end
+}
 
-// @:fakeEnum(String) abstract FileOpenFlags{
-//   Read; R; //Open file for reading. An exception occurs if the file does not exist.
-//   ReadWrite; RPlus; //Open file for reading and writing. An exception occurs if the file does not exist.
-//   ReadSync; RS; //Open file for reading in synchronous mode. Instructs the operating system to bypass the local file system cache.
-//   ReadWriteSync; RSPlus; //Open file for reading and writing, telling the OS to open it synchronously. See notes for 'rs' about using this with caution.
-//   Write; W; //Open file for writing. The file is created (if it does not exist) or truncated (if it exists).
-//   WriteExclusive; WX; //Like 'w' but opens the file in exclusive mode.
-//   WriteRead; WPlus; //Open file for reading and writing. The file is created (if it does not exist) or truncated (if it exists).
-//   WriteReadExclusive; WXPlus; //Like 'w+' but opens the file in exclusive mode.
-//   Append; A; //Open file for appending. The file is created if it does not exist.
-//   AppendExclusive; AX; //Like 'a' but opens the file in exclusive mode.
-//   ReadAppend; APlus; //Open file for reading and appending. The file is created if it does not exist.
-//   ReadAppendExclusive; AXPlus; //Like 'a+' but opens the file in exclusive mode.
-//   Custom(s:String);
-// }
+
+@:enum abstract FileOpenFlags(String) #if !debug from String #end{
+  inline var Read = 'r'; // Open file for reading. An exception occurs if the file does not exist.
+  inline var ReadWrite = 'r+'; // Open file for reading and writing. An exception occurs if the file does not exist.
+  inline var ReadSync = 'rs'; // Open file for reading in synchronous mode. Instructs the operating system to bypass the local file system cache.
+  inline var ReadWriteSync = 'rs+'; // Open file for reading and writing, telling the OS to open it synchronously. See notes for 'rs' about using this with caution.
+  inline var Write = 'w'; // Open file for writing. The file is created (if it does not exist) or truncated (if it exists).
+  inline var WriteExclusive = 'wx'; // Like 'w' but opens the file in exclusive mode.
+  inline var WriteRead = 'w+'; // Open file for reading and writing. The file is created (if it does not exist) or truncated (if it exists).
+  inline var WriteReadExclusive = 'wx+'; // Like 'w+' but opens the file in exclusive mode.
+  inline var Append = 'a'; // Open file for appending. The file is created if it does not exist.
+  inline var AppendExclusive = 'ax'; // Like 'a' but opens the file in exclusive mode.
+  inline var ReadAppend = 'a+'; // Open file for reading and appending. The file is created if it does not exist.
+  inline var ReadAppendExclusive = 'ax+'; // Like 'a+' but opens the file in exclusive mode.
+
+  #if debug
+    static var allowedNames:Array<String> = 'r|r+|rs|rs+|w|wx|w+|wx+|a|ax|a+|ax+'.split('|');
+    public function new(name:String){
+      if(allowedNames.indexOf(name) == -1) throw 'Unkown symlink type: $name';
+      this = name;
+    }
+  #end
+
+}
 
 
 extern class Stats{
@@ -53,10 +68,8 @@ extern class Stats{
   public function isSocket():Bool;
 }
 
-@:initPackage
+@:jsRequire('fs')
 extern class Fs{
-  static function __init__():Void untyped Fs = Node.require('fs');
-
   public static function rename(oldPath:String, newPath:String, ?cb:CB):Void;
   public static function renameSync(oldPath:String, newPath:String):Void;
   public static function truncate(fd:FileDescriptor, len:Int, ?cb:CB):Void;
@@ -79,38 +92,26 @@ extern class Fs{
   public static function statSync(path:String):Stats;
   public static function lstatSync(path:String):Stats;
   public static function fstatSync(fd:FileDescriptor):Stats;
-  public static function link(srcpath:String, dstpath:String, ?cb:CB):Void;
-  public static function linkSync(srcpath:String, dstpath:String):Void;
-
-  @:overload(function(srcpath:String, dstpath:String, type:String, ?cb:CB):Void{})
-  @:overload(function(srcpath:String, dstpath:String, type:SymlinkType, ?cb:CB):Void{})
-  public static function symlink(srcpath:String, dstpath:String, ?cb:CB):Void;
-  @:overload(function(srcpath:String, dstpath:String, type:String):Void{})
-  @:overload(function(srcpath:String, dstpath:String, type:SymlinkType):Void{})
-  public static function symlinkSync(srcpath:String, dstpath:String):Void;
-
+  public static function link(src:String, dst:String, ?cb:CB):Void;
+  public static function linkSync(src:String, dst:String):Void;
+  public static function symlink(src:String, dst:String, ?type:SymlinkType, ?cb:CB):Void;
+  public static function symlinkSync(src:String, dst:String, ?type:SymlinkType):Void;
   public static function readlink(path:String, ?cb:Dynamic->String->Void):Void;
   public static function readlinkSync(path:String):String;
-  @:overload(function (path:String, cache:Dynamic, cb:Dynamic->String->Void):Void{})
-  public static function realpath(path:String, cb:Dynamic->String->Void):Void;
-  public static function realpathSync(path:String, ?cache:Dynamic):String;
+  public static function realpath(path:String, ?cache:js.Object, cb:Dynamic->String->Void):Void;
+  public static function realpathSync(path:String, ?cache:js.Object):String;
   public static function unlink(path:String, ?cb:CB):Void;
   public static function unlinkSync(path:String):Void;
   public static function rmdir(path:String, ?cb:CB):Void;
   public static function rmdirSync(path:String):Void;
-
-  @:overload(function(path:String, mode:Int, ?cb:CB):Void{})
-  public static function mkdir(path:String, ?cb:CB):Void;
-  public static function mkdirSync(path:String, ?mode:Int):Void;
-
+  public static function mkdir(path:String, ?mode:Int = 0x777, ?cb:CB):Void;
+  public static function mkdirSync(path:String, ?mode:Int = 0x777):Void;
   public static function readdir(path:String, ?cb:Dynamic->Array<String>->Void):Void;
   public static function readdirSync(path:String):Array<String>;
   public static function close(fd:FileDescriptor, ?cb:CB):Void;
   public static function closeSync(fd:FileDescriptor):Void;
-
-  @:overload(function(path:String, flags:String, ?mode:Int, ?cb:Dynamic->FileDescriptor->Void):Void{})
   public static function open(path:String, flags:FileOpenFlags, ?mode:Int, ?cb:Dynamic->FileDescriptor->Void):Void; //TODO
-  public static function openSync(path:String, flags:FileOpenFlags, ?mode:Int):FileDescriptor;  //TODO
+  public static function openSync(path:String, flags:FileOpenFlags, ?mode:Int):FileDescriptor;
 
   public static function utimes(path:String, atime:Date, mtime:Date, ?cb:CB):Void;
   public static function utimesSync(path:String, atime:Date, mtime:Date):Void;
@@ -123,28 +124,28 @@ extern class Fs{
   public static function read(fd:FileDescriptor, buffer:Buffer, offset:Int, length:Int, position:Int, ?cb:Dynamic->Int->Buffer->Void):Void;
   public static function readSync(fd:FileDescriptor, buffer:Buffer, offset:Int, length:Int, position:Int):Int;
 
-  @:overload(function(filename:String, encoding:String, cb:Dynamic->String->Void):Void{})
+  @:overload(function(filename:String, enc:Encoding, cb:Dynamic->String->Void):Void{})
   public static function readFile(filename:String, cb:Dynamic->Buffer->Void):Void;
 
-  @:overload(function(filename:String, encoding:String):String{})
+  @:overload(function(filename:String, enc:Encoding):String{})
   public static function readFileSync(filename:String):Buffer;
 
 
-  @:overload(function(filename:String, data:String, encoding:String, ?cb:CB):Void{})
+  @:overload(function(filename:String, data:String, enc:Encoding, ?cb:CB):Void{})
   public static function writeFile(filename:String, data:Buffer, ?cb:CB):Void;
-  @:overload(function(filename:String, data:String, encoding:String):Void{})
+  @:overload(function(filename:String, data:String, enc:Encoding):Void{})
   public static function writeFileSync(filename:String, data:Buffer):Void;
 
 
-  @:overload(function(filename:String, data:String, encoding:String, ?cb:CB):Void{})
+  @:overload(function(filename:String, data:String, enc:Encoding, ?cb:CB):Void{})
   public static function appendFile(filename:String, data:Buffer, ?cb:CB):Void;
-  @:overload(function(filename:String, data:String, encoding:String):Void{})
+  @:overload(function(filename:String, data:String, enc:Encoding):Void{})
   public static function appendFileSync(filename:String, data:Buffer):Void;
 
   //~ public static function watchFile(filename:String, ?options, listener)
   //~ public static function unwatchFile(filename:String, ?listener)
 
-  public static function watch(filename:String, ?options:{persistent:Bool}, ?listener:String->String->Void):FSWatcher<Void>;
+  public static function watch(filename:String, ?options:{persistent:Bool}, ?listener:String->String->Void):FSWatcher;
 
   public static function exists(path:String, cb:Bool->Void):Void;
   public static function existsSync(path:String):Bool;
@@ -170,15 +171,15 @@ private typedef WriteStreamOptions = {
 
 
 extern class ReadStream extends node.stream.ReadableImpl{
-  public function hasEventOpen():Void;
+  // public function hasEventOpen():Void;
 }
 
 extern class WriteStream extends node.stream.ReadableImpl{
-  public function hasEventOpen():Void;
+  // public function hasEventOpen():Void;
 }
 
-@:native('node.Fs.FSWatcher')
-extern class FSWatcher<T> extends EventEmitter{
+// Real class is not reachable in node.js
+extern class FSWatcher extends EventEmitter{
   // public function hasEventChange():Void;
   // public function hasEventError():Void;
   public function close():Void;

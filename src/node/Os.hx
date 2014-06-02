@@ -1,6 +1,6 @@
 package node;
 
-extern class Os{
+@:jsRequire('os') @:final extern class Os{
   public static function tmpdir():String;
   public static function endianness():String; // 'BE' || 'LE'
   public static function hostname():String;
@@ -14,9 +14,7 @@ extern class Os{
   public static function freemem():Float;
   public static function cpus():Array<Dynamic>;
   public static function networkInterfaces():Dynamic<Dynamic>;
-  public static var EOL:String;
-
-  static function __init__():Void untyped Os = Node.require('os');
+  public static var EOL(default, null):String;
 }
 
 

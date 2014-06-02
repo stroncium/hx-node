@@ -1,5 +1,7 @@
 package node;
 
+@:jsRequire('assert')
+@:final
 extern class Assert{
   public static function fail<T>(actual:T, expected:T, message:String, operator:String):Void;
   public static function ok(value:Bool, ?msg:String):Void;
@@ -12,6 +14,4 @@ extern class Assert{
   public static function throws(block:Void->Void, ?error:Dynamic, ?msg:String):Void;
   public static function doesNotThrow(block:Void->Void, ?msg:String):Void;
   public static function ifError(value:Bool):Void;
-
-  static function __init__():Void untyped Assert = Node.require('assert');
 }

@@ -7,18 +7,16 @@ private typedef InterfaceOptions = {
   ?terminal:Bool,
 }
 
+@:native('node.Readline.Interface')
+@:event('line', (line:String))
+@:event('pause')
+@:event('resume')
+@:event('close')
+@:event('SIGINT')
+@:event('SIGTSTP')
+@:event('SIGCONT')
 private extern class Interface extends EventEmitter{
-
-  /*
-  Events:
-    'line'
-    'pause'
-    'resume'
-    'close'
-    'SIGINT'
-    'SIGTSTP'
-    'SIGCONT'
-  */
+  static function __init__():Void Node.classify(Interface, EventEmitter);
 
   public function setPrompt(prompt:String, length:Int):Void;
   public function prompt(?preserveCursor:Bool):Void;
@@ -29,8 +27,7 @@ private extern class Interface extends EventEmitter{
   public function write(data:String, ?key:String):Void;
 }
 
+@:jsRequire('readline') @:final
 extern class Readline{
-  static function __init__():Void untyped  Readline = Node.require('readline');
-
   public static function createInterface(options:InterfaceOptions):Interface;
 }

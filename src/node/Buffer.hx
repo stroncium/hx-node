@@ -1,14 +1,11 @@
 package node;
-@:initPackage
-extern class Buffer implements ArrayAccess<Int>{
-  static function __init__():Void{
-    untyped (Buffer = Node.js('Buffer'));
-  }
 
+@:jsRequire('buffer', 'Buffer')
+extern class Buffer implements ArrayAccess<Int>{
   public static function concat(buffers:Array<Buffer>, ?byteLength:Int):Buffer;
 
- @:overload(function(str:String,?enc:String):Void {})
- @:overload(function(arr:Array<Int>):Void {})
+  @:overload(function(str:String,?enc:Encoding):Void {})
+  @:overload(function(arr:Array<Int>):Void {})
   function new(size:Int):Void;
 
   var length(default,null) : Int;
@@ -16,11 +13,11 @@ extern class Buffer implements ArrayAccess<Int>{
 
   function copy(targetBuffer:Buffer,targetStart:Int,sourceStart:Int,sourceEnd:Int):Void;
   function slice(start:Int,end:Int):Buffer;
-  function write(s:String,?offset:Int,?length:Int,?enc:String):Int;
-  function toString(enc:String,?start:Int,?end:Int):String;
+  function write(s:String,?offset:Int,?length:Int,?enc:Encoding):Int;
+  function toString(enc:Encoding,?start:Int,?end:Int):String;
   function fill(value:Float,offset:Int,?end:Int):Void;
   static function isBuffer(o:Dynamic):Bool;
-  static function byteLength(s:String,?enc:String):Int;
+  static function byteLength(s:String,?enc:Encoding):Int;
 
   function readUInt8(offset:Int,?noAssert:Bool):Int;
   function readUInt16LE(offset:Int,?noAssert:Bool):Int;
@@ -54,22 +51,22 @@ extern class Buffer implements ArrayAccess<Int>{
   function writeDoubleLE(value:Float,offset:Int,?noAssert:Bool):Void; // is this right?
   function writeDoubleBE(value:Float,offset:Int,?noAssert:Bool):Void; // is this right?
 
-  // function readInt32LE(offset:Int,?noAssert:Bool):Int;
-  // function writeInt32LE(value:Int,offset:Int,?noAssert:Bool):Void;
-  public inline function readInt32LE(off:Int):Int{
-    return
-      this[off] |
-      this[off+1] << 8 |
-      this[off+2] << 16 |
-      this[off+3] << 24
-    ;
-  }
-  public inline function writeInt32LE(v:Int, off:Int):Int{
-    this[off] = v & 0xFF;
-    this[off+1] = (v >> 8) & 0xFF;
-    this[off+2] = (v >> 16) & 0xFF;
-    this[off+3] = (v >> 24) & 0xFF;
-    return v;
-  }
+  function readInt32LE(offset:Int,?noAssert:Bool):Int;
+  function writeInt32LE(value:Int,offset:Int,?noAssert:Bool):Void;
+  // public inline function readInt32LE(off:Int):Int{
+  //   return
+  //     this[off] |
+  //     this[off+1] << 8 |
+  //     this[off+2] << 16 |
+  //     this[off+3] << 24
+  //   ;
+  // }
+  // public inline function writeInt32LE(v:Int, off:Int):Int{
+  //   this[off] = v & 0xFF;
+  //   this[off+1] = (v >> 8) & 0xFF;
+  //   this[off+2] = (v >> 16) & 0xFF;
+  //   this[off+3] = (v >> 24) & 0xFF;
+  //   return v;
+  // }
 
 }

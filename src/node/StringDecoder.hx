@@ -1,7 +1,8 @@
 package node;
+
+@:jsRequire('string_decoder', 'StringDecoder')
 extern class StringDecoder{
-  static function __init__():Void untyped StringDecoder = Node.require('string_decoder').StringDecoder;
-  public function new(?enc:String):Void;
+  public static var encoding:Encoding;
+  public function new(?enc:Encoding):Void;
   public function write(buf:Buffer):String;
-  public function end():String;
 }

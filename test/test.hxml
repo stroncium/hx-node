@@ -1,5 +1,0 @@
--main Test
--js test.js
--cp ../
-#-D js-flatten
-#-dce no	

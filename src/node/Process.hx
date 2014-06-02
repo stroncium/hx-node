@@ -1,7 +1,6 @@
 package node;
 
-@:native('process')
-@:publicFields
+@:native('process') @:publicFields @:final
 extern class Process{
   static function on(event:String, fn:Dynamic):Void;
   static inline function onUncaughtException(fn:Dynamic->Void):Void

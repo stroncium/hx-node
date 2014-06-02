@@ -8,9 +8,8 @@ private typedef InspectOpts = {
   ?customInspect:Bool,
 };
 
+@:jsRequire('util')
 extern class Util{
-  static function __init__():Void untyped Util = Node.require('util');
-
   public static var format(default, null):Dynamic;
   public static function debug(s:String):Void;
   public static function error(a1:Dynamic, ?a2:Dynamic, ?a3:Dynamic, ?a4:Dynamic, ?a5:Dynamic):Void;

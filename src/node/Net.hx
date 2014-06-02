@@ -1,17 +1,32 @@
 package node;
 
+@:jsRequire('net') @:final extern class Net{
+  public static function createServer(?opts:{?allowHalfOpen:Bool}, ?listener:Socket->Void):NetServer;
+
+    @:overload(function (path:String, ?listener:Void->Void):Socket{})
+    @:overload(function (opts:{port:Int, ?host:String, ?localAddress:String}, ?listener:Void->Void):Socket{})
+  public static function connect(port:Int, host:String, ?listener:Void->Void):Socket;
+
+  public static function isIP(str:String):Bool;
+  public static function isIPv4(str:String):Bool;
+  public static function isIPv6(str:String):Bool;
+}
+
 private typedef Address = {
   port:Int,
   family:String,
   address:String
 };
-private typedef Handle = Dynamic;
-extern class NetServer extends EventEmitter{
-  // Event: 'listening'
-  // Event: 'connection'
-  // Event: 'close'
-  // Event: 'error'
 
+private abstract Handle(Void){}
+
+@:native('node.Net.Server')
+@:event('listening')
+@:event('connection', (socket:Socket))
+@:event('close')
+@:event('error', (error:Dynamic))
+extern class NetServer extends EventEmitter{
+  static function __init__():Void Node.classify(NetServer, EventEmitter);
 
   @:overload(function (path:String, ?cb:Void->Void):Void{})
   @:overload(function (handle:Handle, ?cb:Void->Void):Void{})
@@ -27,26 +42,22 @@ extern class NetServer extends EventEmitter{
 }
 
 
+@:native('node.Net.Socket')
+@:event('connect')
+@:event('data', (buf:Buffer))
+@:event('end')
+@:event('timeout')
+@:event('drain')
+@:event('error', (error:Dynamic))
+@:event('close', (hadError:Bool))
 extern class Socket extends node.stream.DuplexImpl{
-  // Event: 'connect'
-  // Event: 'data'
-  // Event: 'end'
-  // Event: 'timeout'
-  // Event: 'drain'
-  // Event: 'error'
-  // Event: 'close'
+  static function __init__():Void Node.classify(Socket, node.stream.DuplexImpl);
 
   public function new(?opts:{fd:Fs.FileDescriptor, type:String, ?allowHalfOpen:Bool}):Void;
   @:overload(function (path:String, ?listener:Void->Void):Socket{})
   public function connect(port:Int, host:String, ?listener:Void->Void):Socket;
 
   public var bufferSize:Int;
-  // public function setEncoding([encoding]):;
-  // public function write(data, [encoding], [callback]):;
-  // public function end([data], [encoding]):;
-  // public function destroy():;
-  // public function pause():;
-  // public function resume():;
   public function setTimeout(timeout:Int, ?cb:Void->Void):Void;
   public function setNoDelay(?noDelay:Bool):Void;
   public function setKeepAlive(?enable:Bool, ?initialDelay:Int):Void;
@@ -59,18 +70,4 @@ extern class Socket extends node.stream.DuplexImpl{
   public var localPort(default,null):Int;
   public var bytesRead:Int;
   public var bytesWritten:Int;
-}
-
-extern class Net{
-  static function __init__():Void untyped Net = Node.require('net');
-
-
-  public static function createServer(?opts:{?allowHalfOpen:Bool}, ?listener:Socket->Void):NetServer;
-  @:overload(function (path:String, ?listener:Void->Void):Socket{})
-  @:overload(function (opts:{port:Int, ?host:String, ?localAddress:String}, ?listener:Void->Void):Socket{})
-  public static function connect(port:Int, host:String, ?listener:Void->Void):Socket;
-
-  public static function isIP(str:String):Bool;
-  public static function isIPv4(str:String):Bool;
-  public static function isIPv6(str:String):Bool;
 }

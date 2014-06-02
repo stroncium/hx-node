@@ -12,8 +12,8 @@ private typedef CredentialsDetails = {
 
 extern class Credentials{}
 
+@:jsRequire('crypto')
 extern class Crypto{
-  static function __init__():Void untyped Crypto = Node.require('crypto');
   public static function createCredentials(details:CredentialsDetails):Credentials;
   public static function createHash(algorithm:String):Hash;
   public static function createHmac(algorithm:String, key:String):Hmac;

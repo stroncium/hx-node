@@ -10,8 +10,7 @@ private extern class WriteStream extends node.stream.WritableImpl{
   public var rows(default,null):Int;
 }
 
+@:jsRequire('tty')
 extern class Tty{
-  static function __init__():Void untyped Tty = Node.require('tty');
-
   public static function isatty(fd:node.Fs.FileDescriptor):Bool;
 }

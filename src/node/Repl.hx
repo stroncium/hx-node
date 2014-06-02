@@ -1,8 +1,11 @@
 package node;
 
+@:native('node.Repl.REPLServer')
+@:event('exit')
 private extern class ReplServer extends EventEmitter{
-  // Event: 'exit'
+  static function __init__():Void Node.classify(ReplServer, EventEmitter);
 }
+
 private typedef ReplOptions = {
   ?prompt:String,
   ?input: node.stream.Readable,
@@ -16,8 +19,8 @@ private typedef ReplOptions = {
   ?writer:Dynamic,
 }
 
+@:jsRequire('repl')
+@:final
 extern class Repl{
-  static function __init__():Void untyped Repl = Node.require('repl');
-
   public static function start(?options:ReplOptions):ReplServer;
 }

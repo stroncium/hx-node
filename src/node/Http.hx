@@ -16,15 +16,16 @@ private typedef RequestOptions = {
   ?agent:Dynamic, //TODO
 };
 
+@:jsRequire('http')
+@:final
 extern class Http{
   static function __init__():Void{
-    untyped Http = Node.require('http');
-    Node.oo(HttpServer, EventEmitter);
-    Node.oo(Agent);
-    Node.oo(ServerRequest, node.stream.ReadableImpl, [node.stream.Readable]);
-    Node.oo(ServerResponse, node.stream.WritableImpl, [node.stream.Writable]);
-    Node.oo(ClientResponse, node.stream.ReadableImpl, [node.stream.Readable]);
-    Node.oo(ClientRequest, node.stream.WritableImpl, [node.stream.Writable]);
+    // Node.oo(HttpServer, EventEmitter); //TODO
+    // Node.oo(Agent);
+    // Node.oo(ServerRequest, node.stream.ReadableImpl, [node.stream.Readable]);
+    // Node.oo(ServerResponse, node.stream.WritableImpl, [node.stream.Writable]);
+    // Node.oo(ClientResponse, node.stream.ReadableImpl, [node.stream.Readable]);
+    // Node.oo(ClientRequest, node.stream.WritableImpl, [node.stream.Writable]);
   }
 
   public static var STATUS_CODES:Array<String>;
@@ -41,11 +42,17 @@ extern class Http{
 
 }
 @:native('node.Http.Server')
+@:event('request', (request:ServerRequest), (response:ServerResponse))
+@:event('checkContinue', (request:ServerRequest), (response:ServerResponse))
+@:event('connect', (request:ServerRequest), (socket:Net.Socket), (head:Buffer))
+@:event('upgrade', (request:ServerRequest), (socket:Net.Socket), (head:Buffer))
+@:event('clientError', (error:Dynamic), (socket:Net.Socket))
 extern class HttpServer extends Net.NetServer{
   public var maxHeadersCount:Int;
 }
 
 @:native('node.Http.IncomingMessage')
+@:event('close')
 extern class ServerRequest extends ReadableImpl{
   public var method(default,null):String;
   public var url(default, null):String;
@@ -63,11 +70,14 @@ extern class ServerRequest extends ReadableImpl{
 
 
 @:native('node.Http.ServerResponse')
+@:event('close')
+@:event('finish')
 extern class ServerResponse extends WritableImpl{
   public var statusCode:Int;
   public var sendDate:Bool;
   public function writeContinue():Void;
-  //@:overload(function (statusCode:Int, reasonPhrase:String, ?headers:Dynamic<String>):Void{})
+
+    @:overload(function (statusCode:Int, reasonPhrase:String, ?headers:js.Object):Void{})
   public function writeHead(statusCode:Int, ?headers:js.Object):Void;
   public function setHeader(name:String, value:String):Void;
   public function getHeader(name:String):String;
@@ -75,7 +85,7 @@ extern class ServerResponse extends WritableImpl{
   public function addTrailers(headers:js.Object):Void;
 
   @:overload(function(?data:Buffer):Void{})
-  override public function end(data:String, ?encoding:String = 'utf8'):Void;
+  override public function end(data:String, ?enc:Encoding):Void;
 }
 
 @:native('node.Http.Agent')
@@ -86,6 +96,11 @@ extern class Agent{
 }
 
 @:native('node.Http.ClientRequest')
+@:event('response', (response:ServerRequest))
+@:event('socket', (socket:Net.Socket))
+@:event('connect', (responset:ClientResponse), (socket:Net.Socket), (head:Buffer))
+@:event('upgrade', (responset:ClientResponse), (socket:Net.Socket), (head:Buffer))
+@:event('continue')
 extern class ClientRequest extends WritableImpl{
   public function abort():Void;
   public function setTimeout(timeout:Int, cb:Void->Void):Void;

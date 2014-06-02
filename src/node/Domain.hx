@@ -1,13 +1,14 @@
 package node;
 
+@:jsRequire('domain')
 extern class Domain{
   public static function create():Domain;
 
   public function run(fn:Void->Void):Void;
   public var members(default,null):Array<Dynamic>;
 
-  @:overload(function(timer:node.Node.TimeoutId):Void{})
-  @:overload(function(timer:node.Node.IntervalId):Void{})
+  @:overload(function(timer:Node.TimeoutId):Void{})
+  @:overload(function(timer:Node.IntervalId):Void{})
   public function add(emitter:EventEmitter):Void;
 
   @:overload(function(timer:Node.TimeoutId):Void{})
@@ -18,6 +19,4 @@ extern class Domain{
   public function enter():Void;
   public function exit():Void;
   public function dispose():Void;
-
-  static function __init__():Void untyped Domain = Node.require('domain');
 }
