@@ -14,7 +14,12 @@ extern class IntervalId extends Timer{
 
 private typedef ImmediateId = Void;
 
+
+@:autoBuild(node.Macros.macroModule(false)) interface Module<Const, Const>{}
+@:autoBuild(node.Macros.macroModule(true)) interface ModuleSub<Const, Const, Const>{}
+
 class Node{
+
   public static var Object:Dynamic;
   public static var filename(default, null):String;
   public static var dirname(default, null):String;

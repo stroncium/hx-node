@@ -1,11 +1,12 @@
 package node;
-import haxe.macro.Type;
-import haxe.macro.Context;
-import haxe.macro.Compiler;
-import neko.Lib;
-import sys.FileSystem;
-import sys.io.File;
-
+#if macro
+  import haxe.macro.Type;
+  import haxe.macro.Context;
+  import haxe.macro.Compiler;
+  // import neko.Lib;
+  import sys.FileSystem;
+  import sys.io.File;
+#end
 
 class Npm{
 #if macro
@@ -20,6 +21,7 @@ class Npm{
     // packPath = path;
     packVersion = version;
     haxe.macro.Context.onGenerate(reallyGeneratePackage);
+    return macro null;
   }
 
   static function archiveFile(path:String){
@@ -34,29 +36,9 @@ class Npm{
   }
 
   static function reallyGeneratePackage(types:Array<Type>){
-    var deps = {}
-    for(t in types) switch(t){
-      case TInst(clr, _):
-        var cl = clr.get();
-        if(cl.meta.has(NPM_MODULE_META_NAME)){
-          var ms = cl.meta.get();
-          for(m in ms) if(m.name == NPM_MODULE_META_NAME){
-            if(m.params.length != 2) Context.error('@:$NPM_MODULE_META_NAME requires 2 String arguments', m.pos);
-            var mod = switch(m.params[0].expr){
-              case EConst(CString(v)): v;
-              case _: Context.error('@:$NPM_MODULE_META_NAME requires 2 String arguments', m.pos);
-            }
-            var ver = switch(m.params[1].expr){
-              case EConst(CString(v)): v;
-              case _: Context.error('@:$NPM_MODULE_META_NAME requires 2 String arguments', m.pos);
-            }
-            cl.meta.add(':jsRequire', [m.params[0]], m.pos);
-            Reflect.setField(deps, mod, ver);
-          }
-        }
-      case _:
-    }
-    // Lib.println('Generating package.json for $packName');
+    var deps = {};
+    var mods = node.Macros.usedModules;
+    for(mod in mods.keys()) Reflect.setField(deps, mod, mods[mod]);
 
     var output = Compiler.getOutput().split('/');
     var folder, file;
