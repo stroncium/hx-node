@@ -18,6 +18,7 @@ class Node{
   public static var Object:Dynamic;
   public static var filename(default, null):String;
   public static var dirname(default, null):String;
+  public static var module(default, null):Dynamic;
   static function __init__():Void untyped{
     Object = js('Object');
     setTimeout = js('setTimeout');
@@ -28,6 +29,7 @@ class Node{
     clearImmediate = js('clearImmediate');
     filename = js('__filename');
     dirname = js('__dirname');
+    module = js('module');
     // Object.defineProperty(proto(Array), '__class__', {enumerable:false, writable:true, configurable:false});
   }
 

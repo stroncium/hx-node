@@ -144,7 +144,4 @@ extern class EventEmitter{
 
   #end
 
-// { expr => TLocal({ meta => [], name => emitter, extra => null, t => TInst(node.events.EventEmitter,[]), id => 536, capture => false }), t => TInst(node.events.EventEmitter,[]), pos => #pos(./Test.hx:64: characters 4-14) }
-
-
 }
