@@ -1,22 +1,5 @@
-
-private extern class Timer{
-  public function unref():Void;
-  public function ref():Void;
-}
-
-extern class TimeoutId extends Timer{
-  public inline function clear():Void Node.clearTimeout(this);
-}
-
-extern class IntervalId extends Timer{
-  public inline function clear():Void Node.clearInterval(this);
-}
-
-private typedef ImmediateId = Void;
-
-
-@:autoBuild(node.Macros.macroModule(false)) interface Module<Const, Const>{}
-@:autoBuild(node.Macros.macroModule(true)) interface ModuleSub<Const, Const, Const>{}
+@:autoBuild(node.Macros.macroModule(false)) extern interface Module<Const, Const>{}
+@:autoBuild(node.Macros.macroModule(true)) extern interface ModuleSub<Const, Const, Const>{}
 
 class Node{
 
@@ -71,3 +54,20 @@ class Node{
   }
 
 }
+
+private extern class Timer{
+  public function unref():Void;
+  public function ref():Void;
+}
+
+extern class TimeoutId extends Timer{
+  public inline function clear():Void Node.clearTimeout(this);
+}
+
+extern class IntervalId extends Timer{
+  public inline function clear():Void Node.clearInterval(this);
+}
+
+private typedef ImmediateId = Void;
+
+

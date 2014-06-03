@@ -16,17 +16,16 @@ private typedef RequestOptions = {
   ?agent:Dynamic, //TODO
 };
 
-@:jsRequire('http')
 @:final
-extern class Http{
-  static function __init__():Void{
+extern class Http implements Node.Module<'http', ''>{
+  // static function __init__():Void{
     // Node.oo(HttpServer, EventEmitter); //TODO
     // Node.oo(Agent);
     // Node.oo(ServerRequest, node.stream.ReadableImpl, [node.stream.Readable]);
     // Node.oo(ServerResponse, node.stream.WritableImpl, [node.stream.Writable]);
     // Node.oo(ClientResponse, node.stream.ReadableImpl, [node.stream.Readable]);
     // Node.oo(ClientRequest, node.stream.WritableImpl, [node.stream.Writable]);
-  }
+  // }
 
   public static var STATUS_CODES:Array<String>;
   public static var globalAgent:Agent;

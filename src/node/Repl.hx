@@ -19,8 +19,7 @@ private typedef ReplOptions = {
   ?writer:Dynamic,
 }
 
-@:jsRequire('repl')
 @:final
-extern class Repl{
+extern class Repl implements Node.Module<'repl', ''>{
   public static function start(?options:ReplOptions):ReplServer;
 }

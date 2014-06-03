@@ -27,7 +27,7 @@ private extern class Interface extends EventEmitter{
   public function write(data:String, ?key:String):Void;
 }
 
-@:jsRequire('readline') @:final
-extern class Readline{
+@:final
+extern class Readline implements Node.Module<'readline', ''>{
   public static function createInterface(options:InterfaceOptions):Interface;
 }

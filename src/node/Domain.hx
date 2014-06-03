@@ -1,7 +1,6 @@
 package node;
 
-@:jsRequire('domain')
-extern class Domain{
+extern class Domain implements Node.Module<'domain', ''>{
   public static function create():Domain;
 
   public function run(fn:Void->Void):Void;

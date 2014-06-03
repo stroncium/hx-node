@@ -10,7 +10,6 @@ private extern class WriteStream extends node.stream.WritableImpl{
   public var rows(default,null):Int;
 }
 
-@:jsRequire('tty')
-extern class Tty{
+extern class Tty implements Node.Module<'tty', ''>{
   public static function isatty(fd:node.Fs.FileDescriptor):Bool;
 }

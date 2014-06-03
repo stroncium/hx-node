@@ -19,13 +19,16 @@ class Macros{
   static function macroModule(sub:Bool){
     var cl = Context.getLocalClass().get();
     var consts = getInterfaceConstants(cl, 'Node', [], sub ? 'ModuleSub' : 'Module');
-    var mod = consts[0], ver = consts[1], subname = consts[2];
-    if(consts == null) throw 'macroModule($sub) called on something not implementing Node.${sub?"ModuleSub":"Module"}';
-    var reqArgs = sub ? [macro $v{mod}, macro $v{subname}] : [macro $v{mod}];
-    cl.meta.add(':jsRequire', reqArgs, Context.currentPos());
-    var pver = usedModules[mod];
-    if(pver != null && pver != ver) Context.error('Reusing same Node.js module "$mod" with different versions "$ver" and "$pver"', Context.currentPos());
-    usedModules[mod] = ver;
+    if(consts != null){
+      var mod = consts[0], ver = consts[1], subname = sub ? consts[2] : null;
+      var reqArgs = sub ? [macro $v{mod}, macro $v{subname}] : [macro $v{mod}];
+      cl.meta.add(':jsRequire', reqArgs, Context.currentPos());
+      if(ver != ''){
+        var pver = usedModules[mod];
+        if(pver != null && pver != ver) Context.error('Reusing same Node.js module "$mod" with different versions "$ver" and "$pver"', Context.currentPos());
+        usedModules[mod] = ver;
+      }
+    }
     return Context.getBuildFields();
   }
 

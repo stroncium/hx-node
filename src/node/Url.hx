@@ -14,8 +14,7 @@ private typedef UrlObject = {
   ?hash:String,
 };
 
-@:jsRequire('url')
-extern class Url{
+extern class Url implements Node.Module<'url', ''>{
   public static function parse(url:String, ?parseQueryString:Bool, ?slashesDenoteHost:Bool):UrlObject;
   public static function format(obj:UrlObject):String;
   public static function resolve(url:String, add:String):String;

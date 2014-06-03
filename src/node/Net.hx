@@ -1,6 +1,7 @@
 package node;
 
-@:jsRequire('net') @:final extern class Net{
+@:final
+extern class Net implements Node.Module<'net', ''>{
   public static function createServer(?opts:{?allowHalfOpen:Bool}, ?listener:Socket->Void):NetServer;
 
     @:overload(function (path:String, ?listener:Void->Void):Socket{})

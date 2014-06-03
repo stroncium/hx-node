@@ -55,14 +55,13 @@ private typedef ClusterSettings = {
   silent:Bool,
 };
 
-@:jsRequire('cluster')
 @:event('fork', (worker:Worker))
 @:event('online', (worker:Worker))
 @:event('listening', (worker:Worker), (address:Dynamic)) //TODO
 @:event('disconnect', (worker:Worker))
 @:event('exit', (worker:Worker), (code:Int), (signal:Signal))
 @:event('setup')
-extern class Cluster extends EventEmitter{
+extern class Cluster extends EventEmitter implements Node.Module<'cluster', ''>{
   static function __init__():Void Node.classify(Cluster, EventEmitter);
 
   public static var settings(default,null):ClusterSettings;

@@ -1,7 +1,6 @@
 package node;
 
-@:jsRequire('buffer', 'Buffer')
-extern class Buffer implements ArrayAccess<Int>{
+extern class Buffer implements ArrayAccess<Int> implements Node.ModuleSub<'buffer', '', 'Buffer'>{
   public static function concat(buffers:Array<Buffer>, ?byteLength:Int):Buffer;
 
   @:overload(function(str:String,?enc:Encoding):Void {})

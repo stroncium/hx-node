@@ -6,8 +6,8 @@ private extern class Ucs2{
   public static function encode(codePoints:Array<Int>):String;
 }
 
-@:jsRequire('punycode')
-extern class Punycode{
+@:final
+extern class Punycode implements Node.Module<'punycode', ''>{
   public static function decode(s:String):String;
   public static function encode(s:String):String;
   public static function toUnicode(domain:String):String;

@@ -36,9 +36,8 @@ private extern class Agent {
   public var requests:Array<Http.ClientRequest>;
 }
 
-@:jsRequire('https')
 @:final
-extern class Https{
+extern class Https implements Node.Module<'https', ''>{
   public static function createServer(opts:HttpsOpts, ?listener:Http.ServerRequest->Http.ServerResponse->Void):HttpsServer;
   //TODO
   // public static function request(opts, cb):Void;

@@ -1,7 +1,6 @@
 package node.stream;
 
-@:jsRequire('stream', 'Duplex')
-extern class DuplexImpl extends EventEmitter implements Writable implements Readable{
+extern class DuplexImpl extends EventEmitter implements Writable implements Readable implements Node.ModuleSub<'stream', '', 'Duplex'>{
   static function __init__():Void Node.classify(DuplexImpl, EventEmitter, [Readable, Writable]);
 
   public var writable:Bool;

@@ -1,7 +1,6 @@
 package node;
 
-@:jsRequire('child_process')
-extern class ChildProcess extends EventEmitter{
+extern class ChildProcess extends EventEmitter implements Node.Module<'child_process', ''>{
   static function __init__():Void Node.classify(ChildProcess, EventEmitter);
   // Event 'exit'
   // Event 'close'

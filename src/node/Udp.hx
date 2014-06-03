@@ -4,7 +4,7 @@ package node;
   var Udp6 = 'udp6';
   var Udp4 = 'udp4';
 }
-
+//TODO
 private typedef MsgInfo = {
   address:String,
   port:Int,
@@ -34,8 +34,7 @@ private extern class Socket extends EventEmitter{
   public function ref():Void;
 }
 
-@:jsRequire('dgram')
-extern class Udp{
+extern class Udp implements Node.Module<'dgram', ''>{
   public static function createSocket(type:UdpType, ?cb:Buffer->MsgInfo->Void):Socket;
 }
 
