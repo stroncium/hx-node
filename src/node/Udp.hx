@@ -17,7 +17,7 @@ private typedef UdpAddress = {
   port:Int,
 }
 
-private typedef MsgInfo = { > UdpAddress,
+private typedef UdpMsgInfo = { > UdpAddress,
   size:Int,
 };
 
@@ -25,7 +25,7 @@ private typedef MsgInfo = { > UdpAddress,
 @:event('listening')
 @:event('close')
 @:event('error', (error:js.Error))
-private extern class Socket extends EventEmitter{
+private extern class UdpSocket extends EventEmitter{
   public function send(buf:Buffer, offset:Int, length:Int, port:Int, host:String, ?cb:Dynamic->Buffer->Void):Void;
   public function bind(port:Int, ?address:String, ?cb:Dynamic->Void):Void;
   public function close():Void;
@@ -41,7 +41,7 @@ private extern class Socket extends EventEmitter{
 }
 
 extern class Udp implements Node.Module<'dgram', ''>{
-  public static function createSocket(type:UdpType, ?cb:Buffer->MsgInfo->Void):Socket;
+  public static function createSocket(type:UdpType, ?cb:Buffer->MsgInfo->Void):UdpSocket;
 }
 
 

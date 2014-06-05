@@ -32,7 +32,7 @@ private typedef Address = {
 private typedef Signal = String;
 
 @:native('node.Cluster.Worker')
-@:event('message', (msg:js.Object))
+@:event('message', (msg:Dynamic))
 @:event('online')
 @:event('listening', (address:Address))
 @:event('disconnect')

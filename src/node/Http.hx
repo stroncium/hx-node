@@ -55,7 +55,7 @@ extern class HttpServer extends Net.NetServer{
 extern class ServerRequest extends ReadableImpl{
   public var method(default,null):String;
   public var url(default, null):String;
-  public var headers:js.Object;
+  public var headers:Dynamic;
   public var trailers(default, null):Dynamic;
   public var httpVersion(default, null):String;
   public var connection:Net.Socket;
@@ -74,12 +74,12 @@ extern class ServerResponse extends WritableImpl{
   public var sendDate:Bool;
   public function writeContinue():Void;
 
-    @:overload(function (statusCode:Int, reasonPhrase:String, ?headers:js.Object):Void{})
-  public function writeHead(statusCode:Int, ?headers:js.Object):Void;
+    @:overload(function (statusCode:Int, reasonPhrase:String, ?headers:Dynamic):Void{})
+  public function writeHead(statusCode:Int, ?headers:Dynamic):Void;
   public function setHeader(name:String, value:String):Void;
   public function getHeader(name:String):String;
   public function removeHeader(name:String):Void;
-  public function addTrailers(headers:js.Object):Void;
+  public function addTrailers(trailers:Dynamic):Void;
 
   @:overload(function(?data:Buffer):Void{})
   override public function end(data:String, ?enc:Encoding):Void;
