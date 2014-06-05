@@ -7,6 +7,7 @@ class Node{
   public static var filename(default, null):String;
   public static var dirname(default, null):String;
   public static var module(default, null):Dynamic;
+  public static var process(default, null): node.Process;
   static function __init__():Void untyped{
     Object = js('Object');
     setTimeout = js('setTimeout');
@@ -18,6 +19,7 @@ class Node{
     filename = js('__filename');
     dirname = js('__dirname');
     module = js('module');
+    process = js('process');
   }
 
   @:extern public static inline function proto(cl:Class<Dynamic>):Dynamic return untyped cl.prototype;
