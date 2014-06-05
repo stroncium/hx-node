@@ -3,17 +3,18 @@ import node.stream.ReadableImpl;
 import node.stream.WritableImpl;
 import node.Url;
 
-private typedef RequestOptions = {
+abstract HttpAgentOption(Dynamic) from Bool from Agent{}
+typedef HttpRequestOptions = {
   ?host:String,
   ?hostname:String,
   ?port:Int,
-  ?localAddress:Dynamic, //TODO
-  ?socketPath:Dynamic,//TODO
+  ?localAddress:String,
+  ?socketPath:String,
   ?method:String,
   ?path:String,
-  ?headers:js.Object,
+  ?headers:Dynamic,
   ?auth:String,
-  ?agent:Dynamic, //TODO
+  ?agent:HttpAgentOption,
 };
 
 @:final
@@ -31,11 +32,11 @@ extern class Http implements Node.Module<'http', ''>{
   public static var globalAgent:Agent;
   public static function createServer(listener:ServerRequest->ServerResponse->Void):HttpServer;
 
-  // @:overload(function(options:String, cb:ClientResponse->Void):ClientRequest{})
-  public static function request(options:RequestOptions, cb:ClientResponse->Void):ClientRequest;
+    @:overload(function(options:String, cb:ClientResponse->Void):ClientRequest{})
+  public static function request(options:HttpRequestOptions, cb:ClientResponse->Void):ClientRequest;
 
-  // @:overload(function(options:String, cb:ClientResponse->Void):ClientRequest{})
-  public static function get(options:RequestOptions, cb:ClientResponse->Void):ClientRequest;
+    @:overload(function(options:String, cb:ClientResponse->Void):ClientRequest{})
+  public static function get(options:HttpRequestOptions, cb:ClientResponse->Void):ClientRequest;
 
 
 }
@@ -55,10 +56,8 @@ extern class ServerRequest extends ReadableImpl{
   public var method(default,null):String;
   public var url(default, null):String;
   public var headers:js.Object;
-  public var trailers(default, null):Dynamic; //TODO
+  public var trailers(default, null):Dynamic;
   public var httpVersion(default, null):String;
-  // public function pause():Void;
-  // public function resume():Void;
   public var connection:Net.Socket;
   public var postData:Dynamic;
   public var postFiles:Dynamic;
@@ -110,6 +109,6 @@ extern class ClientRequest extends WritableImpl{
 extern class ClientResponse extends node.stream.ReadableImpl{
   public var statusCode:Int;
   public var httpVersion:String;
-  public var headers:js.Object;
+  public var headers:Dynamic;
   public var trailers:Dynamic;
 }

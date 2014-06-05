@@ -1,7 +1,7 @@
 package node;
 
-private extern class SecureContext{}
-private extern class SslMethod{}
+private abstract SecureContext(Void){}
+private abstract SslMethod(Void){}
 private typedef HttpsOpts = {
   pfx:Buffer, //or String
   key:Buffer, //or String
@@ -20,13 +20,9 @@ private typedef HttpsOpts = {
   secureProtocol:SslMethod,
 };
 
+
 @:native('node.Https.Server')
 private extern class HttpsServer extends Http.HttpServer{
-// server.listen(port, [host], [backlog], [callback])
-// server.listen(path, [callback])
-// server.listen(handle, [callback])
-// server.close([callback])
-
 }
 
 @:native('node.Https.Agent')
@@ -39,9 +35,13 @@ private extern class Agent {
 @:final
 extern class Https implements Node.Module<'https', ''>{
   public static function createServer(opts:HttpsOpts, ?listener:Http.ServerRequest->Http.ServerResponse->Void):HttpsServer;
-  //TODO
-  // public static function request(opts, cb):Void;
-  // public static function get(opts, cb):Void;
+
+    @:overload(function(options:String, cb:Http.ClientResponse->Void):Http.ClientRequest{})
+  public static function request(options:HttpsRequestOptions, cb:Http.ClientResponse->Void):Http.ClientRequest;
+
+    @:overload(function(options:String, cb:Http.ClientResponse->Void):Http.ClientRequest{})
+  public static function get(options:HttpsRequestOptions, cb:Http.ClientResponse->Void):Http.ClientRequest;
+
   public static var globalAgent:Agent;
 
   // static function __init__():Void{
@@ -49,3 +49,26 @@ extern class Https implements Node.Module<'https', ''>{
   //   Node.oo(HttpsServer, Http.HttpServer);
   // }
 }
+
+
+abstract HttpsAgentOption(Dynamic) from Bool from Agent{}
+private typedef HttpsRequestOptions = {
+  ?host:String,
+  ?hostname:String,
+  ?port:Int,
+  ?localAddress:String,
+  ?socketPath:String,
+  ?method:String,
+  ?path:String,
+  ?headers:Dynamic,
+  ?auth:String,
+  ?agent:HttpsAgentOption,
+  ?pfx:BufferOrString,
+  ?key:BufferOrString,
+  ?passphrase:String,
+  ?cert:BufferOrString,
+  ?ca:Array<BufferOrString>,
+  ?ciphers:String, //AES128-GCM-SHA256:RC4:HIGH:!MD5:!aNULL:!EDH
+  ?rejectUnauthorized:Bool,
+  ?secureProtocol:SslMethod,
+};

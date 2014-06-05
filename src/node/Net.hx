@@ -16,7 +16,7 @@ extern class Net implements Node.Module<'net', ''>{
 private typedef Address = {
   port:Int,
   family:String,
-  address:String
+  address:String,
 };
 
 private abstract Handle(Void){}
@@ -29,9 +29,10 @@ private abstract Handle(Void){}
 extern class NetServer extends EventEmitter{
   static function __init__():Void Node.classify(NetServer, EventEmitter);
 
-  @:overload(function (path:String, ?cb:Void->Void):Void{})
-  @:overload(function (handle:Handle, ?cb:Void->Void):Void{})
-  @:overload(function (handle:{fd:Fs.FileDescriptor}, ?cb:Void->Void):Void{})
+
+    @:overload(function (path:String, ?cb:Void->Void):Void{})
+    @:overload(function (handle:Handle, ?cb:Void->Void):Void{})
+    @:overload(function (handle:{fd:Fs.FileDescriptor}, ?cb:Void->Void):Void{})
   public function listen(port:Int, ?host:String, ?backlog:Int, ?cb:Void->Void):Void;
   public function close(?cb:Void->Void):Void;
   public function address():Address;

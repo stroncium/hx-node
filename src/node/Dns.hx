@@ -1,10 +1,13 @@
 package node;
 
-private extern class DnsError{ // TODO
+private extern class DnsError extends js.Error{
   public var code(default,null):DnsErrorCode;
+  public var errno(default,null):DnsErrorCode;
+  public var hostname(default,null):String;
 }
 
 private abstract DnsErrorCode(Void){}
+
 private typedef ResCb<T> = DnsError->Array<T>->Void;
 
 @:final

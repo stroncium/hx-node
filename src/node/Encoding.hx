@@ -13,11 +13,6 @@ abstract Encoding(String) #if !debug from String #end{
 
   #if debug
     static var allowedNames:Array<String> = 'hex|utf8|ascii|binary|base64|ucs2|utf16le|raw'.split('|');
-    public function new(name:String){
-      if(allowedNames.indexOf(name) == -1) throw 'Unkown encoding: $name';
-      this = name;
-    }
-
     @:from public static function fromString(v:String):Encoding{
       if(allowedNames.indexOf(v) == -1) throw 'Unkown encoding: $v';
       return untyped v;

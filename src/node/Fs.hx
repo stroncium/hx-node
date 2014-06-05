@@ -109,7 +109,7 @@ extern class Fs implements Node.Module<'fs', ''>{
   public static function readdirSync(path:String):Array<String>;
   public static function close(fd:FileDescriptor, ?cb:CB):Void;
   public static function closeSync(fd:FileDescriptor):Void;
-  public static function open(path:String, flags:FileOpenFlags, ?mode:Int, ?cb:Dynamic->FileDescriptor->Void):Void; //TODO
+  public static function open(path:String, flags:FileOpenFlags, ?mode:Int, ?cb:Dynamic->FileDescriptor->Void):Void;
   public static function openSync(path:String, flags:FileOpenFlags, ?mode:Int):FileDescriptor;
 
   public static function utimes(path:String, atime:Date, mtime:Date, ?cb:CB):Void;

@@ -48,13 +48,13 @@ private typedef ServerCredentials = {
 
 @:event('secureConnection', (stream:CleartextStream))
 @:event('clientError', (error:Dynamic), (pair:SecurePair))
-@:event('newSession', (id:Dynamic), (data:Dynamic)) //TODO
-@:event('resumeSession', (id:Dynamic), (callback:Dynamic->Dynamic->Void)) //TODO
+@:event('newSession', (id:Buffer), (data:Dynamic))
+@:event('resumeSession', (id:Buffer), (callback:Dynamic->Dynamic->Void))
 private extern class Server extends Http.HttpServer{
   public function addContext(hostname:String, creds:Credentials):Void;
 }
 
-@:event('secure') //TODO
+@:event('secure')
 private extern class SecurePair extends EventEmitter{
   public var cleartext:CleartextStream;
   public var encrypted:CryptoStream;
