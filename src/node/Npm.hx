@@ -81,7 +81,7 @@ class Npm{
       }
     }
     else{
-      File.saveContent(packPath, haxe.Json.stringify(data));
+      File.saveContent(packPath, haxe.Json.stringify(data, null, '  '));
     }
   }
 #end
