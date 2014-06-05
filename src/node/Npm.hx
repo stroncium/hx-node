@@ -73,7 +73,7 @@ class Npm{
         Context.warning('"$packPath" is unparseable, ignoring.', Context.currentPos());
       }
 
-      var newTxt = haxe.Json.stringify(data);
+      var newTxt = haxe.Json.stringify(data, null, '  ');
       if(newTxt != oldTxt){
         var oldPath = archiveFile(packPath);
         Context.warning('"$packPath" exists, saving as "$oldPath"', Context.currentPos());
