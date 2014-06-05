@@ -15,8 +15,6 @@ extern class EventEmitter implements Node.ModuleSub<'events', '', 'EventEmitter'
 
   public static function listenerCount(emitter:EventEmitter, event:String):Int;
 
-  public function emit(event:String,?arg1:Dynamic,?arg2:Dynamic,?arg3:Dynamic, ?arg4:Dynamic):Void;
-
   #if untype_events
     public function emit(event:String,?arg1:Dynamic,?arg2:Dynamic,?arg3:Dynamic, ?arg4:Dynamic):Void;
     public function addListener(event:String,fn:Dynamic):Void;
@@ -27,6 +25,7 @@ extern class EventEmitter implements Node.ModuleSub<'events', '', 'EventEmitter'
     public function on(event:String, fn:Dynamic):Void;
   #end
 
+  public inline function unsafeEmit(event:String,?arg1:Dynamic,?arg2:Dynamic,?arg3:Dynamic, ?arg4:Dynamic):Void (untyped this).emit(event, arg1, arg2, arg3, arg4);
   public inline function unsafeOn(event:String, fn:Dynamic):Void (untyped this).on(event, fn);
   public inline function unsafeAddListener(event:String,fn:Dynamic):Void (untyped this).addListener(event, fn);
   public inline function unsafeOnce(event:String,fn:Dynamic):Void (untyped this).once(event, fn);
@@ -64,6 +63,28 @@ extern class EventEmitter implements Node.ModuleSub<'events', '', 'EventEmitter'
       var type = checkEvent(that, event);
       var ctype = type.toComplexType();
       return macro ($that.unsafeListeners($v{event}, $fn):$ctype);
+    }
+
+    @:extern public macro function emit(that:haxe.macro.Expr, event:String, args:Array<haxe.macro.Expr>){
+      var type = checkEvent(that, event);
+      switch(type){
+        case TFun(targs, _):
+          if(targs.length != args.length){
+            Context.error('@:event "$event" should have ${targs.length} arguments', Context.currentPos());
+            return null;
+          }
+          for(i in 0...args.length){
+            var atype = Context.typeof(args[i]);
+            var type = targs[i].t;
+            if(!Context.unify(atype, type)){
+              Context.error('${cl.name} @:event "$event" argument ${i+1} should be of type ${type.toString()}, not ${atype.toString()}', fn.pos);
+              return null;
+            }
+          }
+          args.unshift(macro $v{event});
+          return macro (untyped $that).emit($a{args});
+        case _: throw 'impossible';
+      }
     }
   #end
   #if macro

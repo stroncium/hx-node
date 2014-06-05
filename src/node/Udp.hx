@@ -1,10 +1,10 @@
 package node;
 
-@:enum abstract UdpType(String){
+@:enum abstract UdpType(String){ //TODO
   var Udp6 = 'udp6';
   var Udp4 = 'udp4';
 }
-//TODO
+
 private typedef MsgInfo = {
   address:String,
   port:Int,

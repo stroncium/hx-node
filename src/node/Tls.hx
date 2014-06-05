@@ -19,8 +19,10 @@ private typedef TlsOpts = {
   secureProtocol:SslMethod,
 };
 
-private typedef SecureContext = Dynamic; //TODO
-private typedef SslMethod = Dynamic; //TODO
+private abstract SecureContext(Void){}
+private abstract SslMethod(Void){}
+// private typedef SecureContext = Dynamic;
+// private typedef SslMethod = Dynamic;
 private typedef ConnectOpts = {
   ?host:String,
   ?port:Int,
@@ -44,17 +46,16 @@ private typedef ServerCredentials = {
   ?ca:Array<Buffer>,
 };
 
+@:event('secureConnection', (stream:CleartextStream))
+@:event('clientError', (error:Dynamic), (pair:SecurePair))
+@:event('newSession', (id:Dynamic), (data:Dynamic)) //TODO
+@:event('resumeSession', (id:Dynamic), (callback:Dynamic->Dynamic->Void)) //TODO
 private extern class Server extends Http.HttpServer{
-  // Event: 'secureConnection'
-  // Event: 'clientError'
-  // Event: 'newSession'
-  // Event: 'resumeSession'
-
   public function addContext(hostname:String, creds:Credentials):Void;
 }
 
+@:event('secure') //TODO
 private extern class SecurePair extends EventEmitter{
-  // Event 'secure'
   public var cleartext:CleartextStream;
   public var encrypted:CryptoStream;
 }
@@ -71,9 +72,8 @@ private typedef Address = {
   address: String,
 };
 
+@:event('secureConnect')
 private extern class CleartextStream extends node.stream.DuplexImpl{
-  //Event 'secureConnect'
-
   public var authorized(default,null):Bool;
   public var authorizationError(default,null):Dynamic;
   public function getPeerCertificate():PeerCertificate;
@@ -84,6 +84,7 @@ private extern class CleartextStream extends node.stream.DuplexImpl{
 
 }
 
+@:final
 extern class Tls implements Node.Module<'tls', ''>{
   public static function getCiphers():Array<String>;
   public static function createServer(opts:TlsOpts, ?listener:CleartextStream->Void):Server;

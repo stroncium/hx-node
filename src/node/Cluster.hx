@@ -57,7 +57,7 @@ private typedef ClusterSettings = {
 
 @:event('fork', (worker:Worker))
 @:event('online', (worker:Worker))
-@:event('listening', (worker:Worker), (address:Dynamic)) //TODO
+@:event('listening', (worker:Worker), (address:Address))
 @:event('disconnect', (worker:Worker))
 @:event('exit', (worker:Worker), (code:Int), (signal:Signal))
 @:event('setup')

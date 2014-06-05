@@ -38,7 +38,6 @@ extern class Http implements Node.Module<'http', ''>{
   public static function get(options:RequestOptions, cb:ClientResponse->Void):ClientRequest;
 
 
-
 }
 @:native('node.Http.Server')
 @:event('request', (request:ServerRequest), (response:ServerResponse))

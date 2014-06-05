@@ -18,18 +18,12 @@ class Node{
     filename = js('__filename');
     dirname = js('__dirname');
     module = js('module');
-    // Object.defineProperty(proto(Array), '__class__', {enumerable:false, writable:true, configurable:false});
   }
 
   @:extern public static inline function proto(cl:Class<Dynamic>):Dynamic return untyped cl.prototype;
 
   @:extern public static inline function js(str:String):Dynamic return untyped __js__(str);
   @:extern public static inline function typeof(v:Dynamic) return js('typeof')(v);
-
-  // @:extern public static inline function resolve(name:String):String return untyped require.resolve(name);
-  // public static inline function requireSub(name:String, sub:String){
-  //   return require(node.Path.dirname(resolve(name))+'/'+sub);
-  // }
 
   @:extern public static function setTimeout(cb:Void->Void, delay:Float):TimeoutId return null;
   @:extern public static function clearTimeout(id:TimeoutId):Void{};
@@ -46,7 +40,7 @@ class Node{
   @:extern public static function get_undefined() return js('void 0');
 
   public static function classify<SC, C:SC>(cl:Class<C>, sup:Class<SC>, ?ifaces:Array<Class<Dynamic>>){
-  //   cl.__name__ = true;
+    // cl.__name__ = true; //TODO
     untyped if(cl.prototype == null) cl.prototype = {};
     untyped cl.prototype.__class__ = cl;
     if(ifaces != null) untyped cl.__interfaces__ = ifaces;
