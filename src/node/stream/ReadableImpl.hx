@@ -1,6 +1,9 @@
 package node.stream;
 
-extern class ReadableImpl extends EventEmitter implements Readable implements Node.ModuleSub<'stream', '', 'Readable'>{
+extern class ReadableImpl
+extends EventEmitter
+implements Readable
+implements Node.ModuleSub<'stream', '', 'Readable'>{
   static function __init__():Void Node.classify(ReadableImpl, EventEmitter, [Readable]);
   public var readable:Bool;
   public function setEncoding(encoding:String):Void{};

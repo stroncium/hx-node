@@ -2,12 +2,11 @@
   "name": "node",
   "license": "MIT",
   "tags": ["nodejs","node","js","binding"],
-  "description": "Better bindings for node.js.",
+  "description": "Better bindings for node.js. Type the world!",
   "contributors": ["stroncium"],
   "releasenote": "Initial release.",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "url": "https://github.com/stroncium/hx-node",
   "dependencies": {
-
   }
 }

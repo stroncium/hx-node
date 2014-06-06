@@ -56,29 +56,33 @@ extern class EventEmitter implements Node.ModuleSub<'events', '', 'EventEmitter'
 
     @:extern public macro function removeAllListeners(that:haxe.macro.Expr, event:String){
       checkEvent(that, event);
-      return macro $that.unsafeRemoveAllListeners($v{event});
+      return macro (untyped $that).removeAllListeners($v{event});
     }
 
-    @:extern public macro function listeners(that:haxe.macro.Expr, event:String, fn:haxe.macro.Expr){
+    @:extern public macro function listeners(that:haxe.macro.Expr, event:String){
       var type = checkEvent(that, event);
       var ctype = type.toComplexType();
-      return macro ($that.unsafeListeners($v{event}, $fn):$ctype);
+      var actype = TPath({
+        pack:[], name: 'Array',
+        params:[TPType(ctype)],
+      });
+      return macro (((untyped $that).listeners($v{event})):$actype);
     }
 
     @:extern public macro function emit(that:haxe.macro.Expr, event:String, args:Array<haxe.macro.Expr>){
-      var type = checkEvent(that, event);
+      var cl = getInstClass(that);
+      var type = getEventData(cl, event);
       switch(type){
         case TFun(targs, _):
           if(targs.length != args.length){
-            Context.error('@:event "$event" should have ${targs.length} arguments', Context.currentPos());
+            Context.error('${cl.name} @:event(\'$event\') should have ${targs.length} arguments', Context.currentPos());
             return null;
           }
           for(i in 0...args.length){
             var atype = Context.typeof(args[i]);
             var type = targs[i].t;
             if(!Context.unify(atype, type)){
-              Context.error('${cl.name} @:event "$event" argument ${i+1} should be of type ${type.toString()}, not ${atype.toString()}', fn.pos);
-              return null;
+              Context.error('${cl.name} @:event(\'$event\') argument ${i+1} should be of type ${type.toString()}, not ${atype.toString()}', args[i].pos);
             }
           }
           args.unshift(macro $v{event});
@@ -101,7 +105,7 @@ extern class EventEmitter implements Node.ModuleSub<'events', '', 'EventEmitter'
       var type = getEventData(cl, event);
       var fntype = Context.typeof(fn);
       if(!Context.unify(fntype, type)){
-        Context.error('${cl.name} @:event "$event" listener should be of type ${type.toString()}, not ${fntype.toString()}', fn.pos);
+        Context.error('${cl.name} @:event(\'$event\') listener should be of type ${type.toString()}, not ${fntype.toString()}', fn.pos);
       }
     }
 
@@ -121,7 +125,7 @@ extern class EventEmitter implements Node.ModuleSub<'events', '', 'EventEmitter'
         if(cl.superClass == null) cl = null;
         else cl = cl.superClass.t.get();
       }
-      Context.error('class ${baseClass.name} doesn\'t have @:event \'$event\' declared', Context.currentPos());
+      Context.error('${baseClass.name} @:event(\'$event\') was not declared', Context.currentPos());
       return null;
     }
 

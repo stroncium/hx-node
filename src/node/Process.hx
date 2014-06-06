@@ -13,9 +13,9 @@ package node;
 @:event('SIGSTOP')
 @:final
 extern class Process{
-  public var stdout(default,null):node.stream.WritableImpl;
-  public var stderr(default,null):node.stream.WritableImpl;
-  public var stdin(default,null):node.stream.ReadableImpl;
+  public var stdout(default,null):node.stream.Writable;
+  public var stderr(default,null):node.stream.Writable;
+  public var stdin(default,null):node.stream.Readable;
   public var argv(default, null):Array<String>;
   public var execPath(default, null):String;
   public var execArgv(default, null):String;

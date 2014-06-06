@@ -1,6 +1,9 @@
 package node.stream;
 
-extern class WritableImpl extends EventEmitter implements Writable implements Node.ModuleSub<'stream', '', 'Writable'>{
+extern class WritableImpl
+extends EventEmitter
+implements Writable
+implements Node.ModuleSub<'stream', '', 'Writable'>{
   static function __init__():Void Node.classify(WritableImpl, EventEmitter, [Writable]);
   public var writable:Bool;
   public function setEncoding(encoding:String):Void{};

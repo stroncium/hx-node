@@ -1,6 +1,11 @@
-@:autoBuild(node.Macros.macroModule(false)) extern interface Module<Const, Const>{}
-@:autoBuild(node.Macros.macroModule(true)) extern interface ModuleSub<Const, Const, Const>{}
 
+#if !macro @:autoBuild(node.Macros.macroModule(false)) #end
+extern interface Module<Const, Const>{}
+
+#if !macro @:autoBuild(node.Macros.macroModule(true)) #end
+extern interface ModuleSub<Const, Const, Const>{}
+
+#if macro typedef Node = {}; #else
 class Node{
 
   public static var Object:Dynamic;
@@ -22,7 +27,7 @@ class Node{
     process = js('process');
   }
 
-  @:extern public static inline function proto(cl:Class<Dynamic>):Dynamic return untyped cl.prototype;
+  // @:extern public static inline function proto(cl:Class<Dynamic>):Dynamic return untyped cl.prototype;
 
   @:extern public static inline function js(str:String):Dynamic return untyped __js__(str);
   @:extern public static inline function typeof(v:Dynamic) return js('typeof')(v);
@@ -66,4 +71,4 @@ extern class IntervalId extends Timer{
 
 private typedef ImmediateId = Void;
 
-
+#end
