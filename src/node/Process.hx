@@ -12,7 +12,7 @@ package node;
 @:event('SIGKILL')
 @:event('SIGSTOP')
 @:final
-extern class Process{
+extern class Process extends node.EventEmitter{
   public var stdout(default,null):node.stream.Writable;
   public var stderr(default,null):node.stream.Writable;
   public var stdin(default,null):node.stream.Readable;

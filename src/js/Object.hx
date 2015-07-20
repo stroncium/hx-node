@@ -1,6 +1,6 @@
 package js;
 
-abstract Object({}) from {} to Dynamic{
+abstract Object({}) from Dynamic to Dynamic{
   @:extern public inline function new() this = {};
   @:extern
   @:arrayAccess

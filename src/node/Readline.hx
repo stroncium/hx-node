@@ -7,7 +7,6 @@ private typedef InterfaceOptions = {
   ?terminal:Bool,
 }
 
-@:native('node.Readline.Interface')
 @:event('line', (line:String))
 @:event('pause')
 @:event('resume')
@@ -15,8 +14,8 @@ private typedef InterfaceOptions = {
 @:event('SIGINT')
 @:event('SIGTSTP')
 @:event('SIGCONT')
-private extern class Interface extends EventEmitter{
-  static function __init__():Void Node.classify(Interface, EventEmitter);
+private extern class Interface extends EventEmitter implements Node.ModuleSub<'readline', '', 'Interface'>{
+  // static function __init__():Void Node.classify(Interface, EventEmitter);
 
   public function setPrompt(prompt:String, length:Int):Void;
   public function prompt(?preserveCursor:Bool):Void;

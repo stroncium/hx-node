@@ -1,9 +1,8 @@
 package node;
 
-@:native('node.Repl.REPLServer')
 @:event('exit')
-private extern class ReplServer extends EventEmitter{
-  static function __init__():Void Node.classify(ReplServer, EventEmitter);
+private extern class ReplServer extends EventEmitter implements Node.ModuleSub('repl', '', 'REPLServer'{
+  // static function __init__():Void Node.classify(ReplServer, EventEmitter);
 }
 
 private typedef ReplOptions = {

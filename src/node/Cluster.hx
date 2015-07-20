@@ -31,15 +31,14 @@ private typedef Address = {
 
 private typedef Signal = String;
 
-@:native('node.Cluster.Worker')
 @:event('message', (msg:Dynamic))
 @:event('online')
 @:event('listening', (address:Address))
 @:event('disconnect')
 @:event('exit', (code:Int), (signal:Signal))
 @:event('error')
-extern class Worker extends EventEmitter{
-  static function __init__():Void Node.classify(Worker, EventEmitter);
+extern class Worker extends EventEmitter implements Node.ModuleSub<'cluster', '', 'Worker'>{
+  // static function __init__():Void Node.classify(Worker, EventEmitter);
 
   public var id:String;
   public var process:ChildProcess;
@@ -62,7 +61,7 @@ private typedef ClusterSettings = {
 @:event('exit', (worker:Worker), (code:Int), (signal:Signal))
 @:event('setup')
 extern class Cluster extends EventEmitter implements Node.Module<'cluster', ''>{
-  static function __init__():Void Node.classify(Cluster, EventEmitter);
+  // static function __init__():Void Node.classify(Cluster, EventEmitter);
 
   public static var settings(default,null):ClusterSettings;
   public static var isMaster(default,null):Bool;

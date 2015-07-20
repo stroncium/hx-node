@@ -22,7 +22,7 @@ class Macros{
     if(consts != null){
       var mod = consts[0], ver = consts[1], subname = sub ? consts[2] : null;
       var reqArgs = sub ? [macro $v{mod}, macro $v{subname}] : [macro $v{mod}];
-      cl.meta.add(':jsRequire', reqArgs, Context.currentPos());
+      if(!cl.meta.has(':jsRequire')) cl.meta.add(':jsRequire', reqArgs, Context.currentPos());
       if(ver != ''){
         var pver = usedModules[mod];
         if(pver != null && pver != ver) Context.error('Reusing same Node.js module "$mod" with different versions "$ver" and "$pver"', Context.currentPos());

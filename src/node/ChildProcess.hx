@@ -1,11 +1,11 @@
 package node;
 
+@:event('exit') //TODO
+@:event('close') //TODO
+@:event('disconnect') //TODO
+@:event('message') //TODO
 extern class ChildProcess extends EventEmitter implements Node.Module<'child_process', ''>{
-  static function __init__():Void Node.classify(ChildProcess, EventEmitter);
-  // Event 'exit'
-  // Event 'close'
-  // Event 'disconnect'
-  // Event 'message'
+  // static function __init__():Void Node.classify(ChildProcess, EventEmitter);
   public var stdin(default,null):node.stream.Writable;
   public var stdout(default,null):node.stream.Readable;
   public var stderr(default,null):node.stream.Readable;

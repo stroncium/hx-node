@@ -20,17 +20,17 @@ extern class EventEmitter implements Node.ModuleSub<'events', '', 'EventEmitter'
     public function addListener(event:String,fn:Dynamic):Void;
     public function once(event:String,fn:Dynamic):Void;
     public function removeListener(event:String,listener:Dynamic):Void;
-    public function removeAllListeners(event:String):Void;
+    public function removeAllListeners(?event:String):Void;
     public function listeners(event:String):Array<Dynamic>;
     public function on(event:String, fn:Dynamic):Void;
   #end
 
   public inline function unsafeEmit(event:String,?arg1:Dynamic,?arg2:Dynamic,?arg3:Dynamic, ?arg4:Dynamic):Void (untyped this).emit(event, arg1, arg2, arg3, arg4);
   public inline function unsafeOn(event:String, fn:Dynamic):Void (untyped this).on(event, fn);
-  public inline function unsafeAddListener(event:String,fn:Dynamic):Void (untyped this).addListener(event, fn);
+  public inline function unsafeAddEventListener(event:String,fn:Dynamic):Void (untyped this).addEventListener(event, fn);
   public inline function unsafeOnce(event:String,fn:Dynamic):Void (untyped this).once(event, fn);
   public inline function unsafeRemoveListener(event:String, fn:Dynamic):Void (untyped this).removeListener(event, fn);
-  public inline function unsafeRemoveAllListeners(event:String):Void (untyped this).removeAllListeners(event);
+  public inline function unsafeRemoveAllListeners(?event:String):Void (untyped this).removeAllListeners(event);
   public inline function unsafeListeners(event:String):Array<Dynamic> return (untyped this).listeners(event);
 
 
@@ -54,8 +54,8 @@ extern class EventEmitter implements Node.ModuleSub<'events', '', 'EventEmitter'
       return macro $that.unsafeOnce($v{event}, $fn);
     }
 
-    @:extern public macro function removeAllListeners(that:haxe.macro.Expr, event:String){
-      checkEvent(that, event);
+    @:extern public macro function removeAllListeners(that:haxe.macro.Expr, ?event:String){
+      if(event != null) checkEvent(that, event);
       return macro (untyped $that).removeAllListeners($v{event});
     }
 
@@ -100,11 +100,15 @@ extern class EventEmitter implements Node.ModuleSub<'events', '', 'EventEmitter'
       });
     }
 
+    static inline function fnUnify(fn1, fn2){
+      return Context.unify(fn1, fn2);
+    }
+
     static inline function checkEventFn(that:Expr, event:String, fn:Expr){
       var cl = getInstClass(that);
       var type = getEventData(cl, event);
       var fntype = Context.typeof(fn);
-      if(!Context.unify(fntype, type)){
+      if(!fnUnify(fntype, type)){
         Context.error('${cl.name} @:event(\'$event\') listener should be of type ${type.toString()}, not ${fntype.toString()}', fn.pos);
       }
     }
@@ -154,7 +158,17 @@ extern class EventEmitter implements Node.ModuleSub<'events', '', 'EventEmitter'
             var e = m.params[i];
             switch(e.expr){
               case EParenthesis({expr:ECheckType({expr:EConst(CIdent(name))}, ctype)}):
-                var type = ctype.toType();
+                var type;
+                try{
+                  type = ctype.toType();
+                }catch(e:Dynamic){
+                  switch(ctype){
+                    case TPath(p):
+                      p.pack = cl.pack;
+                    case _:
+                  }
+                  type = ctype.toType();
+                }
                 {name:name, t:type, opt:false};
               case e: throw 'error';
             }

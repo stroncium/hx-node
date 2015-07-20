@@ -10,7 +10,7 @@ extern class Buffer implements ArrayAccess<Int> implements Node.ModuleSub<'buffe
   var length(default,null) : Int;
   var INSPECT_MAX_BYTES:Int;
 
-  function copy(targetBuffer:Buffer,targetStart:Int,sourceStart:Int,sourceEnd:Int):Void;
+  function copy(targetBuffer:Buffer,?targetStart:Int,?sourceStart:Int,?sourceEnd:Int):Void;
   function slice(start:Int,end:Int):Buffer;
   function write(s:String,?offset:Int,?length:Int,?enc:Encoding):Int;
   function toString(enc:Encoding,?start:Int,?end:Int):String;

@@ -12,7 +12,7 @@ typedef HttpRequestOptions = {
   ?socketPath:String,
   ?method:String,
   ?path:String,
-  ?headers:Dynamic,
+  ?headers:js.Object,
   ?auth:String,
   ?agent:HttpAgentOption,
 };
@@ -30,7 +30,7 @@ extern class Http implements Node.Module<'http', ''>{
 
   public static var STATUS_CODES:Array<String>;
   public static var globalAgent:Agent;
-  public static function createServer(listener:ServerRequest->ServerResponse->Void):HttpServer;
+  public static function createServer(?listener:ServerRequest->ServerResponse->Void):HttpServer;
 
     @:overload(function(options:String, cb:ClientResponse->Void):ClientRequest{})
   public static function request(options:HttpRequestOptions, cb:ClientResponse->Void):ClientRequest;
@@ -40,22 +40,21 @@ extern class Http implements Node.Module<'http', ''>{
 
 
 }
-@:native('node.Http.Server')
+
 @:event('request', (request:ServerRequest), (response:ServerResponse))
 @:event('checkContinue', (request:ServerRequest), (response:ServerResponse))
 @:event('connect', (request:ServerRequest), (socket:Net.Socket), (head:Buffer))
 @:event('upgrade', (request:ServerRequest), (socket:Net.Socket), (head:Buffer))
 @:event('clientError', (error:Dynamic), (socket:Net.Socket))
-extern class HttpServer extends Net.NetServer{
+extern class HttpServer extends Net.NetServer implements Node.ModuleSub<'http', '', 'Server'>{
   public var maxHeadersCount:Int;
 }
 
-@:native('node.Http.IncomingMessage')
 @:event('close')
-extern class ServerRequest extends ReadableImpl{
+extern class ServerRequest extends ReadableImpl implements Node.ModuleSub<'http', '', 'IncomingMessage'>{
   public var method(default,null):String;
   public var url(default, null):String;
-  public var headers:Dynamic;
+  public var headers:js.Object;
   public var trailers(default, null):Dynamic;
   public var httpVersion(default, null):String;
   public var connection:Net.Socket;
@@ -66,10 +65,9 @@ extern class ServerRequest extends ReadableImpl{
 }
 
 
-@:native('node.Http.ServerResponse')
 @:event('close')
 @:event('finish')
-extern class ServerResponse extends WritableImpl{
+extern class ServerResponse extends WritableImpl implements Node.ModuleSub<'http', '', 'ServerResponse'>{
   public var statusCode:Int;
   public var sendDate:Bool;
   public function writeContinue():Void;
@@ -85,30 +83,27 @@ extern class ServerResponse extends WritableImpl{
   override public function end(data:String, ?enc:Encoding):Void;
 }
 
-@:native('node.Http.Agent')
-extern class Agent{
+extern class Agent implements Node.ModuleSub<'http', '', 'Agent'>{
   public var maxSockets:Int;
-  public var sockets:Array<Net.Socket>;
+  public var sockets:haxe.DynamicAccess<Array<Dynamic>>; //TODO
   public var requests:Array<ClientRequest>;
 }
 
-@:native('node.Http.ClientRequest')
 @:event('response', (response:ServerRequest))
 @:event('socket', (socket:Net.Socket))
 @:event('connect', (responset:ClientResponse), (socket:Net.Socket), (head:Buffer))
 @:event('upgrade', (responset:ClientResponse), (socket:Net.Socket), (head:Buffer))
 @:event('continue')
-extern class ClientRequest extends WritableImpl{
+extern class ClientRequest extends WritableImpl implements Node.ModuleSub<'http', '', 'ClientRequest'>{
   public function abort():Void;
   public function setTimeout(timeout:Int, cb:Void->Void):Void;
   public function setNoDelay(?noDelay:Bool = true):Void;
   public function setSocketKeepAlive(?enable:Bool = false ?initialDelay:Int = 0):Void;
 }
 
-@:native('node.Http.OutgoingMessage')
-extern class ClientResponse extends node.stream.ReadableImpl{
+extern class ClientResponse extends node.stream.ReadableImpl  implements Node.ModuleSub<'http', '', 'OutgoingMessage'>{
   public var statusCode:Int;
   public var httpVersion:String;
-  public var headers:Dynamic;
+  public var headers:js.Object;
   public var trailers:Dynamic;
 }

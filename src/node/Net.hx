@@ -1,6 +1,7 @@
-package node;
 
-@:final
+package node;
+import node.stream.DuplexImpl;
+
 extern class Net implements Node.Module<'net', ''>{
   public static function createServer(?opts:{?allowHalfOpen:Bool}, ?listener:Socket->Void):NetServer;
 
@@ -21,14 +22,12 @@ private typedef Address = {
 
 private abstract Handle(Void){}
 
-@:native('node.Net.Server')
 @:event('listening')
 @:event('connection', (socket:Socket))
 @:event('close')
 @:event('error', (error:Dynamic))
-extern class NetServer extends EventEmitter{
-  static function __init__():Void Node.classify(NetServer, EventEmitter);
-
+extern class NetServer extends EventEmitter implements Node.ModuleSub<'net', '', 'Server'>{
+  // static function __init__():Void Node.classify(NetServer, EventEmitter);
 
     @:overload(function (path:String, ?cb:Void->Void):Void{})
     @:overload(function (handle:Handle, ?cb:Void->Void):Void{})
@@ -44,7 +43,6 @@ extern class NetServer extends EventEmitter{
 }
 
 
-@:native('node.Net.Socket')
 @:event('connect')
 @:event('data', (buf:Buffer))
 @:event('end')
@@ -52,8 +50,8 @@ extern class NetServer extends EventEmitter{
 @:event('drain')
 @:event('error', (error:Dynamic))
 @:event('close', (hadError:Bool))
-extern class Socket extends node.stream.DuplexImpl{
-  static function __init__():Void Node.classify(Socket, node.stream.DuplexImpl);
+extern class Socket extends DuplexImpl implements Node.ModuleSub<'net', '', 'Socket'>{
+  // static function __init__():Void Node.classify(Socket, DuplexImpl);
 
   public function new(?opts:{fd:Fs.FileDescriptor, type:String, ?allowHalfOpen:Bool}):Void;
   @:overload(function (path:String, ?listener:Void->Void):Socket{})

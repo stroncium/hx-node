@@ -21,12 +21,10 @@ private typedef HttpsOpts = {
 };
 
 
-@:native('node.Https.Server')
-private extern class HttpsServer extends Http.HttpServer{
+private extern class HttpsServer extends Http.HttpServer implements Node.ModuleSub<'https', '', 'Server'>{
 }
 
-@:native('node.Https.Agent')
-private extern class Agent {
+private extern class Agent implements Node.ModuleSub<'https', '', 'Agent'>{
   public var maxSockets:Int;
   public var sockets:Array<Net.Socket>;
   public var requests:Array<Http.ClientRequest>;

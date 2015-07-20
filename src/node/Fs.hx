@@ -19,18 +19,18 @@ abstract FileDescriptor(Void){}
 
 
 @:enum abstract FileOpenFlags(String) #if !debug from String #end{
-  inline var Read = 'r'; // Open file for reading. An exception occurs if the file does not exist.
-  inline var ReadWrite = 'r+'; // Open file for reading and writing. An exception occurs if the file does not exist.
-  inline var ReadSync = 'rs'; // Open file for reading in synchronous mode. Instructs the operating system to bypass the local file system cache.
-  inline var ReadWriteSync = 'rs+'; // Open file for reading and writing, telling the OS to open it synchronously. See notes for 'rs' about using this with caution.
-  inline var Write = 'w'; // Open file for writing. The file is created (if it does not exist) or truncated (if it exists).
-  inline var WriteExclusive = 'wx'; // Like 'w' but opens the file in exclusive mode.
-  inline var WriteRead = 'w+'; // Open file for reading and writing. The file is created (if it does not exist) or truncated (if it exists).
-  inline var WriteReadExclusive = 'wx+'; // Like 'w+' but opens the file in exclusive mode.
-  inline var Append = 'a'; // Open file for appending. The file is created if it does not exist.
-  inline var AppendExclusive = 'ax'; // Like 'a' but opens the file in exclusive mode.
-  inline var ReadAppend = 'a+'; // Open file for reading and appending. The file is created if it does not exist.
-  inline var ReadAppendExclusive = 'ax+'; // Like 'a+' but opens the file in exclusive mode.
+  @:extern inline var Read = 'r'; // Open file for reading. An exception occurs if the file does not exist.
+  @:extern inline var ReadWrite = 'r+'; // Open file for reading and writing. An exception occurs if the file does not exist.
+  @:extern inline var ReadSync = 'rs'; // Open file for reading in synchronous mode. Instructs the operating system to bypass the local file system cache.
+  @:extern inline var ReadWriteSync = 'rs+'; // Open file for reading and writing, telling the OS to open it synchronously. See notes for 'rs' about using this with caution.
+  @:extern inline var Write = 'w'; // Open file for writing. The file is created (if it does not exist) or truncated (if it exists).
+  @:extern inline var WriteExclusive = 'wx'; // Like 'w' but opens the file in exclusive mode.
+  @:extern inline var WriteRead = 'w+'; // Open file for reading and writing. The file is created (if it does not exist) or truncated (if it exists).
+  @:extern inline var WriteReadExclusive = 'wx+'; // Like 'w+' but opens the file in exclusive mode.
+  @:extern inline var Append = 'a'; // Open file for appending. The file is created if it does not exist.
+  @:extern inline var AppendExclusive = 'ax'; // Like 'a' but opens the file in exclusive mode.
+  @:extern inline var ReadAppend = 'a+'; // Open file for reading and appending. The file is created if it does not exist.
+  @:extern inline var ReadAppendExclusive = 'ax+'; // Like 'a+' but opens the file in exclusive mode.
 
   #if debug
     static var allowedNames:Array<String> = 'r|r+|rs|rs+|w|wx|w+|wx+|a|ax|a+|ax+'.split('|');

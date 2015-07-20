@@ -6,6 +6,7 @@ extern interface Module<Const, Const>{}
 extern interface ModuleSub<Const, Const, Const>{}
 
 #if macro typedef Node = {}; #else
+@:keep
 class Node{
 
   public static var Object:Dynamic;
@@ -42,17 +43,17 @@ class Node{
   @:extern public static inline function isUndefined(v:Dynamic) return js('void 0 === ')(v);
   @:extern public static inline function isNotUndefined(v:Dynamic) return js('void 0 !== ')(v);
 
-  public static var undefined(get, null):Dynamic;
+  // public static var undefined(get, null):Dynamic;
 
-  @:extern public static function get_undefined() return js('void 0');
+  // @:extern public static function get_undefined() return js('void 0');
 
-  public static function classify<SC, C:SC>(cl:Class<C>, sup:Class<SC>, ?ifaces:Array<Class<Dynamic>>){
-    // cl.__name__ = true; //TODO
-    untyped if(cl.prototype == null) cl.prototype = {};
-    untyped cl.prototype.__class__ = cl;
-    if(ifaces != null) untyped cl.__interfaces__ = ifaces;
-    if(sup != null) untyped cl.__super__ = sup;
-  }
+  // public static function classify<SC, C:SC>(cl:Class<C>, sup:Class<SC>, ?ifaces:Array<Class<Dynamic>>){
+  //   // cl.__name__ = true; //TODO
+  //   untyped if(cl.prototype == null) cl.prototype = {};
+  //   untyped cl.prototype.__class__ = cl;
+  //   if(ifaces != null) untyped cl.__interfaces__ = ifaces;
+  //   if(sup != null) untyped cl.__super__ = sup;
+  // }
 
 }
 
