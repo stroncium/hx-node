@@ -9,13 +9,14 @@ package node.events;
 
 @:event('newListener', (event:String), (fn:Dynamic))
 @:event('removeListener', (event:String), (fn:Dynamic))
-extern class EventEmitter implements Node.ModuleSub<'events', '', 'EventEmitter'>{
+@:jsRequire('events', 'EventEmitter')
+extern class EventEmitter{
   public function new():Void;
   public function setMaxListeners(m:Int):Void;
 
   public static function listenerCount(emitter:EventEmitter, event:String):Int;
 
-  #if untype_events
+  #if !type_events
     public function emit(event:String,?arg1:Dynamic,?arg2:Dynamic,?arg3:Dynamic, ?arg4:Dynamic):Void;
     public function addListener(event:String,fn:Dynamic):Void;
     public function once(event:String,fn:Dynamic):Void;
@@ -25,36 +26,42 @@ extern class EventEmitter implements Node.ModuleSub<'events', '', 'EventEmitter'
     public function on(event:String, fn:Dynamic):Void;
   #end
 
-  public inline function unsafeEmit(event:String,?arg1:Dynamic,?arg2:Dynamic,?arg3:Dynamic, ?arg4:Dynamic):Void (untyped this).emit(event, arg1, arg2, arg3, arg4);
-  public inline function unsafeOn(event:String, fn:Dynamic):Void (untyped this).on(event, fn);
-  public inline function unsafeAddEventListener(event:String,fn:Dynamic):Void (untyped this).addEventListener(event, fn);
-  public inline function unsafeOnce(event:String,fn:Dynamic):Void (untyped this).once(event, fn);
-  public inline function unsafeRemoveListener(event:String, fn:Dynamic):Void (untyped this).removeListener(event, fn);
-  public inline function unsafeRemoveAllListeners(?event:String):Void (untyped this).removeAllListeners(event);
-  public inline function unsafeListeners(event:String):Array<Dynamic> return (untyped this).listeners(event);
+  //public inline function unsafeEmit(event:String,?arg1:Dynamic,?arg2:Dynamic,?arg3:Dynamic, ?arg4:Dynamic):Void (untyped this).emit(event, arg1, arg2, arg3, arg4);
+  //public inline function unsafeOn(event:String, fn:Dynamic):Void (untyped this).on(event, fn);
+  //public inline function unsafeAddEventListener(event:String,fn:Dynamic):Void (untyped this).addEventListener(event, fn);
+  //public inline function unsafeOnce(event:String,fn:Dynamic):Void (untyped this).once(event, fn);
+  //public inline function unsafeRemoveListener(event:String, fn:Dynamic):Void (untyped this).removeListener(event, fn);
+  //public inline function unsafeRemoveAllListeners(?event:String):Void (untyped this).removeAllListeners(event);
+  //public inline function unsafeListeners(event:String):Array<Dynamic> return (untyped this).listeners(event);
 
 
-  #if !untype_events
-    @:extern public macro function on(that:haxe.macro.Expr, event:String, fn:haxe.macro.Expr){
-      checkEventFn(that, event, fn);
-      return macro $that.unsafeOn($v{event}, $fn);
-    }
-    @:extern public macro function addEventListener(that:haxe.macro.Expr, event:String, fn:haxe.macro.Expr){
-      checkEventFn(that, event, fn);
-      return macro $that.unsafeAddEventListener($v{event}, $fn);
-    }
-
-    @:extern public macro function removeListener(that:haxe.macro.Expr, event:String, fn:haxe.macro.Expr){
-      checkEventFn(that, event, fn);
-      return macro $that.unsafeRemoveListener($v{event}, $fn);
+  #if type_events
+    //public macro function on(that:haxe.macro.Expr, event:String, fn:haxe.macro.Expr){
+    @:extern public macro function on(that, event, fn){
+      //trace('lol');
+      /*checkEventFn(that, event, fn);
+      var ret = macro (untyped $that).on($v{event}, $fn);
+      trace(ret);*/
+      //return ret;
+      //return macro null;
     }
 
-    @:extern public macro function once(that:haxe.macro.Expr, event:String, fn:haxe.macro.Expr){
+    public macro function addEventListener(that:haxe.macro.Expr, event:String, fn:haxe.macro.Expr){
       checkEventFn(that, event, fn);
-      return macro $that.unsafeOnce($v{event}, $fn);
+      return macro (untyped $that).addEventListener($v{event}, $fn);
     }
 
-    @:extern public macro function removeAllListeners(that:haxe.macro.Expr, ?event:String){
+    public macro function removeListener(that:haxe.macro.Expr, event:String, fn:haxe.macro.Expr){
+      checkEventFn(that, event, fn);
+      return macro (untyped $that).removeListener($v{event}, $fn);
+    }
+
+    public macro function once(that:haxe.macro.Expr, event:String, fn:haxe.macro.Expr){
+      checkEventFn(that, event, fn);
+      return macro (untyped $that).once($v{event}, $fn);
+    }
+
+    public macro function removeAllListeners(that:haxe.macro.Expr, ?event:String){
       if(event != null) checkEvent(that, event);
       return macro (untyped $that).removeAllListeners($v{event});
     }

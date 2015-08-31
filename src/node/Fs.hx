@@ -68,7 +68,8 @@ extern class Stats{
   public function isSocket():Bool;
 }
 
-extern class Fs implements Node.Module<'fs', ''>{
+@:jsRequire('fs')
+extern class Fs{
   public static function rename(oldPath:String, newPath:String, ?cb:CB):Void;
   public static function renameSync(oldPath:String, newPath:String):Void;
   public static function truncate(fd:FileDescriptor, len:Int, ?cb:CB):Void;

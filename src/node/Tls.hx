@@ -85,7 +85,8 @@ private extern class CleartextStream extends node.stream.DuplexImpl{
 }
 
 @:final
-extern class Tls implements Node.Module<'tls', ''>{
+@:jsRequire('tls')
+extern class Tls{
   public static function getCiphers():Array<String>;
   public static function createServer(opts:TlsOpts, ?listener:CleartextStream->Void):Server;
 

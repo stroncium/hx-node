@@ -4,7 +4,8 @@ package node;
 @:event('close') //TODO
 @:event('disconnect') //TODO
 @:event('message') //TODO
-extern class ChildProcess extends EventEmitter implements Node.Module<'child_process', ''>{
+@:jsRequire('child_process')
+extern class ChildProcess extends EventEmitter{
   // static function __init__():Void Node.classify(ChildProcess, EventEmitter);
   public var stdin(default,null):node.stream.Writable;
   public var stdout(default,null):node.stream.Readable;

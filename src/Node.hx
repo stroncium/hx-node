@@ -1,10 +1,4 @@
 
-#if !macro @:autoBuild(node.Macros.macroModule(false)) #end
-extern interface Module<Const, Const>{}
-
-#if !macro @:autoBuild(node.Macros.macroModule(true)) #end
-extern interface ModuleSub<Const, Const, Const>{}
-
 #if macro typedef Node = {}; #else
 @:keep
 class Node{

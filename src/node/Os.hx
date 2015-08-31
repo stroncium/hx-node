@@ -1,7 +1,8 @@
 package node;
 
 @:final
-extern class Os implements Node.Module<'os', ''>{
+@:jsRequire('os')
+extern class Os{
   public static function tmpdir():String;
   public static function endianness():String; // 'BE' || 'LE'
   public static function hostname():String;

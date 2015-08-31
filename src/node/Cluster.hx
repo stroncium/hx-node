@@ -37,7 +37,8 @@ private typedef Signal = String;
 @:event('disconnect')
 @:event('exit', (code:Int), (signal:Signal))
 @:event('error')
-extern class Worker extends EventEmitter implements Node.ModuleSub<'cluster', '', 'Worker'>{
+@:jsRequire('cluster', 'Worker')
+extern class Worker extends EventEmitter{
   // static function __init__():Void Node.classify(Worker, EventEmitter);
 
   public var id:String;
@@ -60,7 +61,8 @@ private typedef ClusterSettings = {
 @:event('disconnect', (worker:Worker))
 @:event('exit', (worker:Worker), (code:Int), (signal:Signal))
 @:event('setup')
-extern class Cluster extends EventEmitter implements Node.Module<'cluster', ''>{
+@:jsRequire('cluster')
+extern class Cluster extends EventEmitter{
   // static function __init__():Void Node.classify(Cluster, EventEmitter);
 
   public static var settings(default,null):ClusterSettings;

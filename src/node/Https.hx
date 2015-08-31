@@ -21,17 +21,20 @@ private typedef HttpsOpts = {
 };
 
 
-private extern class HttpsServer extends Http.HttpServer implements Node.ModuleSub<'https', '', 'Server'>{
+@:jsRequire('https', 'Server')
+private extern class HttpsServer extends Http.HttpServer{
 }
 
-private extern class Agent implements Node.ModuleSub<'https', '', 'Agent'>{
+@:jsRequire('https', 'Agent')
+private extern class Agent{
   public var maxSockets:Int;
   public var sockets:Array<Net.Socket>;
   public var requests:Array<Http.ClientRequest>;
 }
 
 @:final
-extern class Https implements Node.Module<'https', ''>{
+@:jsRequire('https')
+extern class Https{
   public static function createServer(opts:HttpsOpts, ?listener:Http.ServerRequest->Http.ServerResponse->Void):HttpsServer;
 
     @:overload(function(options:String, cb:Http.ClientResponse->Void):Http.ClientRequest{})

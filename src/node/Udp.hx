@@ -40,7 +40,9 @@ private extern class UdpSocket extends EventEmitter{
   public function ref():Void;
 }
 
-extern class Udp implements Node.Module<'dgram', ''>{
+@:final
+@:jsRequire('dgram')
+extern class Udp{
   public static function createSocket(type:UdpType, ?cb:Buffer->UdpMsgInfo->Void):UdpSocket;
 }
 

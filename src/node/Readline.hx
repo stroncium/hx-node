@@ -14,7 +14,8 @@ private typedef InterfaceOptions = {
 @:event('SIGINT')
 @:event('SIGTSTP')
 @:event('SIGCONT')
-private extern class Interface extends EventEmitter implements Node.ModuleSub<'readline', '', 'Interface'>{
+@:jsRequire('readline', 'Interface')
+private extern class Interface extends EventEmitter{
   // static function __init__():Void Node.classify(Interface, EventEmitter);
 
   public function setPrompt(prompt:String, length:Int):Void;
@@ -27,6 +28,7 @@ private extern class Interface extends EventEmitter implements Node.ModuleSub<'r
 }
 
 @:final
-extern class Readline implements Node.Module<'readline', ''>{
+@:jsRequire('readline')
+extern class Readline{
   public static function createInterface(options:InterfaceOptions):Interface;
 }

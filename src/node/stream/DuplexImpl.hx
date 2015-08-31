@@ -7,7 +7,8 @@ package node.stream;
 @:event('close')
 @:event('pipe')
 @:keep
-extern class DuplexImpl extends EventEmitter implements Duplex implements Writable implements Readable implements Node.ModuleSub<'stream', '', 'Duplex'>{
+@:jsRequire('stream', 'Duplex')
+extern class DuplexImpl extends EventEmitter implements Duplex implements Writable implements Readable{
   // static function __init__():Void Node.classify(DuplexImpl, EventEmitter, [Readable, Writable]);
   public var writable:Bool;
   public var readable:Bool;

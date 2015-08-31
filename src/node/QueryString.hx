@@ -1,6 +1,7 @@
 package node;
 @:final
-extern class QueryString implements Node.Module<'querystring', ''>{
+@:jsRequire('querystring')
+extern class QueryString{
   public static function stringify(obj:Dynamic, ?sep:String, ?eq:String):String;
   public static function parse(str:String, ?sep:String, ?eq:String, ?options:{?maxKeys:Int}):Dynamic<String>;
   public static function escape(str:String):String;

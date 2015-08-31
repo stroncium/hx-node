@@ -12,7 +12,9 @@ private typedef CredentialsDetails = {
 
 extern class Credentials{}
 
-extern class Crypto implements Node.Module<'crypto', ''>{
+@:final
+@:jsRequire('crypto')
+extern class Crypto{
   public static function createCredentials(details:CredentialsDetails):Credentials;
   public static function createHash(algorithm:String):Hash;
   public static function createHmac(algorithm:String, key:String):Hmac;

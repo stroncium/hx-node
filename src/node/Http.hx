@@ -18,7 +18,8 @@ typedef HttpRequestOptions = {
 };
 
 @:final
-extern class Http implements Node.Module<'http', ''>{
+@:jsRequire('http')
+extern class Http{
   // static function __init__():Void{
     // Node.oo(HttpServer, EventEmitter); //TODO
     // Node.oo(Agent);
@@ -46,12 +47,14 @@ extern class Http implements Node.Module<'http', ''>{
 @:event('connect', (request:ServerRequest), (socket:Net.Socket), (head:Buffer))
 @:event('upgrade', (request:ServerRequest), (socket:Net.Socket), (head:Buffer))
 @:event('clientError', (error:Dynamic), (socket:Net.Socket))
-extern class HttpServer extends Net.NetServer implements Node.ModuleSub<'http', '', 'Server'>{
+@:jsRequire('http', 'Server')
+extern class HttpServer extends Net.NetServer{
   public var maxHeadersCount:Int;
 }
 
 @:event('close')
-extern class ServerRequest extends ReadableImpl implements Node.ModuleSub<'http', '', 'IncomingMessage'>{
+@:jsRequire('http', 'IncomingMessage')
+extern class ServerRequest extends ReadableImpl{
   public var method(default,null):String;
   public var url(default, null):String;
   public var headers:js.Object;
@@ -67,7 +70,8 @@ extern class ServerRequest extends ReadableImpl implements Node.ModuleSub<'http'
 
 @:event('close')
 @:event('finish')
-extern class ServerResponse extends WritableImpl implements Node.ModuleSub<'http', '', 'ServerResponse'>{
+@:jsRequire('http', 'ServerResponse')
+extern class ServerResponse extends WritableImpl{
   public var statusCode:Int;
   public var sendDate:Bool;
   public function writeContinue():Void;
@@ -83,7 +87,8 @@ extern class ServerResponse extends WritableImpl implements Node.ModuleSub<'http
   override public function end(data:String, ?enc:Encoding):Void;
 }
 
-extern class Agent implements Node.ModuleSub<'http', '', 'Agent'>{
+@:jsRequire('http', 'Agent')
+extern class Agent{
   public var maxSockets:Int;
   public var sockets:haxe.DynamicAccess<Array<Dynamic>>; //TODO
   public var requests:Array<ClientRequest>;
@@ -94,14 +99,16 @@ extern class Agent implements Node.ModuleSub<'http', '', 'Agent'>{
 @:event('connect', (responset:ClientResponse), (socket:Net.Socket), (head:Buffer))
 @:event('upgrade', (responset:ClientResponse), (socket:Net.Socket), (head:Buffer))
 @:event('continue')
-extern class ClientRequest extends WritableImpl implements Node.ModuleSub<'http', '', 'ClientRequest'>{
+@:jsRequire('http', 'ClientRequest')
+extern class ClientRequest extends WritableImpl{
   public function abort():Void;
   public function setTimeout(timeout:Int, cb:Void->Void):Void;
   public function setNoDelay(?noDelay:Bool = true):Void;
   public function setSocketKeepAlive(?enable:Bool = false ?initialDelay:Int = 0):Void;
 }
 
-extern class ClientResponse extends node.stream.ReadableImpl  implements Node.ModuleSub<'http', '', 'OutgoingMessage'>{
+@:jsRequire('http', 'OutgoingMessage')
+extern class ClientResponse extends node.stream.ReadableImpl{
   public var statusCode:Int;
   public var httpVersion:String;
   public var headers:js.Object;

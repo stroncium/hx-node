@@ -1,7 +1,8 @@
 package node;
 
 @:final
-extern class Assert implements Node.Module<'assert', ''>{
+@:jsRequire('assert')
+extern class Assert{
   public static function fail<T>(actual:T, expected:T, message:String, operator:String):Void;
   public static function ok(value:Bool, ?msg:String):Void;
   public static function equal<T>(actual:T, expected:T, ?msg:String):Void;

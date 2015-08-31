@@ -1,6 +1,7 @@
 package node;
 @:final
-extern class Path implements Node.Module<'path', ''>{
+@:jsRequire('path')
+extern class Path{
   public static function normalize(p:String):String;
   public static function join(p1:String, p2:String, ?p3:String, ?p4:String, ?p5:String):String;
   public static function resolve(p1:String, p2:String, ?p3:String, ?p4:String, ?p5:String):String;

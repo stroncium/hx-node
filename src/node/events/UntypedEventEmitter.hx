@@ -2,7 +2,8 @@ package node.events;
 
 @:event('newListener', (event:String), (fn:Dynamic))
 @:event('removeListener', (event:String), (fn:Dynamic))
-extern class UntypedEventEmitter implements Node.ModuleSub<'events', '', 'EventEmitter'>{
+@:jsRequire('events', 'EventEmitter')
+extern class UntypedEventEmitter{
   public function new():Void;
   public function setMaxListeners(m:Int):Void;
 

@@ -27,7 +27,8 @@ private extern class DeflateRaw extends Zlib{}
 private extern class InflateRaw extends Zlib{}
 private extern class Unzip extends Zlib{}
 
-extern class Zlib implements Node.Module<'zlib', ''>{
+@:jsRequire('zlib')
+extern class Zlib{
   public function flush(cb:Void->Void):Void;
   public function reset():Void;
 

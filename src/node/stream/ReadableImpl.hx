@@ -4,7 +4,8 @@ package node.stream;
 @:event('end')
 @:event('close')
 @:event('error', (error:Dynamic))
-extern class ReadableImpl extends EventEmitter implements Readable implements Node.ModuleSub<'stream', '', 'Readable'>{
+@:jsRequire('stream', 'Readable')
+extern class ReadableImpl extends EventEmitter implements Readable{
   // static function __init__():Void Node.classify(ReadableImpl, EventEmitter, [Readable]);
   public var readable:Bool;
   public function setEncoding(encoding:Encoding):Void{};

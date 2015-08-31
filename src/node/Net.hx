@@ -1,8 +1,8 @@
 
 package node;
 import node.stream.DuplexImpl;
-
-extern class Net implements Node.Module<'net', ''>{
+@:jsRequire('net')
+extern class Net{
   public static function createServer(?opts:{?allowHalfOpen:Bool}, ?listener:Socket->Void):NetServer;
 
     @:overload(function (path:String, ?listener:Void->Void):Socket{})
@@ -26,7 +26,8 @@ private abstract Handle(Void){}
 @:event('connection', (socket:Socket))
 @:event('close')
 @:event('error', (error:Dynamic))
-extern class NetServer extends EventEmitter implements Node.ModuleSub<'net', '', 'Server'>{
+@:jsRequire('net', 'Server')
+extern class NetServer extends EventEmitter{
   // static function __init__():Void Node.classify(NetServer, EventEmitter);
 
     @:overload(function (path:String, ?cb:Void->Void):Void{})
@@ -50,7 +51,8 @@ extern class NetServer extends EventEmitter implements Node.ModuleSub<'net', '',
 @:event('drain')
 @:event('error', (error:Dynamic))
 @:event('close', (hadError:Bool))
-extern class Socket extends DuplexImpl implements Node.ModuleSub<'net', '', 'Socket'>{
+@:jsRequire('net', 'Socket')
+extern class Socket extends DuplexImpl{
   // static function __init__():Void Node.classify(Socket, DuplexImpl);
 
   public function new(?opts:{fd:Fs.FileDescriptor, type:String, ?allowHalfOpen:Bool}):Void;

@@ -11,7 +11,8 @@ private abstract DnsErrorCode(Void){}
 private typedef ResCb<T> = DnsError->Array<T>->Void;
 
 @:final
-extern class Dns implements Node.Module<'dns', ''>{
+@:jsRequire('dns')
+extern class Dns{
   public static function lookup(domain:String, ?family:Null<Int>, cb:Dynamic->String->Int->Void):Void;
   public static function resolve(domain:String, ?rrtype:String, cb:ResCb<Dynamic>):Void;
   public static function resolve4(domain:String, cb:ResCb<String>):Void;

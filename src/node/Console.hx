@@ -1,5 +1,7 @@
 package node;
-extern class Console implements Node.Module<'console',''>{
+
+@:jsRequire('console')
+extern class Console{
   public static var log(default,null):Dynamic;
   public static var info(default,null):Dynamic;
   public static var error(default,null):Dynamic;

@@ -1,5 +1,6 @@
 package node;
 
+//TODO
 private extern class ReadStream extends node.stream.ReadableImpl{
   public var isRaw(default,null):Bool;
   public function setRawMode(mode:Bool):Void;
@@ -10,6 +11,7 @@ private extern class WriteStream extends node.stream.WritableImpl{
   public var rows(default,null):Int;
 }
 
-extern class Tty implements Node.Module<'tty', ''>{
+@:jsRequire('tty')
+extern class Tty{
   public static function isatty(fd:node.Fs.FileDescriptor):Bool;
 }

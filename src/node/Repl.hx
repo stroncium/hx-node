@@ -1,7 +1,8 @@
 package node;
 
 @:event('exit')
-private extern class ReplServer extends EventEmitter implements Node.ModuleSub('repl', '', 'REPLServer'{
+@:jsRequire('repl', 'REPLServer')
+private extern class ReplServer extends EventEmitter{
   // static function __init__():Void Node.classify(ReplServer, EventEmitter);
 }
 
@@ -19,6 +20,7 @@ private typedef ReplOptions = {
 }
 
 @:final
-extern class Repl implements Node.Module<'repl', ''>{
+@:jsRequire('repl')
+extern class Repl{
   public static function start(?options:ReplOptions):ReplServer;
 }
