@@ -98,8 +98,8 @@ extern class Fs{
   public static function symlinkSync(src:String, dst:String, ?type:SymlinkType):Void;
   public static function readlink(path:String, ?cb:Dynamic->String->Void):Void;
   public static function readlinkSync(path:String):String;
-  public static function realpath(path:String, ?cache:js.Object, cb:Dynamic->String->Void):Void;
-  public static function realpathSync(path:String, ?cache:js.Object):String;
+  public static function realpath(path:String, ?cache:Dynamic, cb:Dynamic->String->Void):Void;
+  public static function realpathSync(path:String, ?cache:Dynamic):String;
   public static function unlink(path:String, ?cb:CB):Void;
   public static function unlinkSync(path:String):Void;
   public static function rmdir(path:String, ?cb:CB):Void;

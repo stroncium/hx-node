@@ -3,6 +3,7 @@ import node.stream.ReadableImpl;
 import node.stream.WritableImpl;
 import node.Url;
 
+private typedef Headers = haxe.DynamicAccess<String>;
 abstract HttpAgentOption(Dynamic) from Bool from Agent{}
 typedef HttpRequestOptions = {
   ?host:String,
@@ -12,7 +13,7 @@ typedef HttpRequestOptions = {
   ?socketPath:String,
   ?method:String,
   ?path:String,
-  ?headers:js.Object,
+  ?headers:Dynamic,
   ?auth:String,
   ?agent:HttpAgentOption,
 };
@@ -57,7 +58,7 @@ extern class HttpServer extends Net.NetServer{
 extern class ServerRequest extends ReadableImpl{
   public var method(default,null):String;
   public var url(default, null):String;
-  public var headers:js.Object;
+  public var headers:Headers;
   public var trailers(default, null):Dynamic;
   public var httpVersion(default, null):String;
   public var connection:Net.Socket;
@@ -111,6 +112,6 @@ extern class ClientRequest extends WritableImpl{
 extern class ClientResponse extends node.stream.ReadableImpl{
   public var statusCode:Int;
   public var httpVersion:String;
-  public var headers:js.Object;
+  public var headers:Headers;
   public var trailers:Dynamic;
 }
