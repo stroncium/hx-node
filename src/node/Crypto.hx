@@ -31,8 +31,8 @@ extern class Crypto{
   public static function createDiffieHellman(prime:Buffer):DiffieHellman;
   // public function createDiffieHellman(prime:, ?enc:String):DiffieHellman;
   public static function getDiffieHellman(group_name:String):DiffieHellman;
-  public static function pbkdf2Sync(password:String, salt:String, iterations:Int, keylen:Int):String;
-  public static function pbkdf2(password:String, salt:String, iterations:Int, keylen:Int, cb:Dynamic->String->Void):Void;
+  public static function pbkdf2Sync(password:String, salt:String, iterations:Int, keylen:Int):node.Buffer;
+  public static function pbkdf2(password:String, salt:String, iterations:Int, keylen:Int, cb:Dynamic->node.Buffer->Void):Void;
 
   public static function randomBytes(size:Int, ?cb:Dynamic->Buffer->Void):Buffer;
 }
